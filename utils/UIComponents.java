@@ -8,6 +8,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,10 +18,14 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -27,24 +33,26 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 public class UIComponents {
+    public static final Color bgColor = new Color(34, 34, 41);
+    public static final Color containerColor = new Color(42, 42, 52);
     public static final Color primaryColor = new Color(100, 98, 253);
     public static final Color secondaryColor = new Color(133, 132, 255);
-    public static final Color bgColor = new Color(34, 34, 41);
-    public static final Color grayColor = new Color(42, 42, 52);
     public static final Color lightColor = new Color(255, 255, 255);
+    public static final Color grayColor = new Color(169, 163, 181);
 
     public static final Font defaultFont = loadFont("assets/Poppins-Regular.ttf", 18);
+    public static final Font largeFont = loadFont("assets/Poppins-Regular.ttf", 24);
 
     public static final Dimension defaultDimension = new Dimension(400, 45);
-
-    public static final Border containerBorder = new EmptyBorder(60, 25, 60, 25);
     
-    public static final Border lineBorder = new LineBorder(primaryColor, 2);
-    public static final Border paddingBorder = new EmptyBorder(8, 12, 8, 12);
+    public static final Border defaultLineBorder = new LineBorder(primaryColor, 2);
+    
+    public static final Border largePaddingBorder = new EmptyBorder(40, 25, 40, 25);
+    public static final Border defaultPaddingBorder = new EmptyBorder(8, 12, 8, 12);
 
     public static final Border compoundBorder = BorderFactory.createCompoundBorder(
-        lineBorder, 
-        paddingBorder
+        defaultLineBorder, 
+        defaultPaddingBorder
     );
 
     public static final Insets textInsets = new Insets(0, 0, 10, 0);
@@ -57,12 +65,17 @@ public class UIComponents {
         text.setFont(defaultFont);
         text.setForeground(lightColor);
 
+        int width = (int) defaultDimension.getWidth();
+        int height = (int) text.getPreferredSize().getHeight();
+        
+        text.setPreferredSize(new Dimension(width, height));
+
         return text;
     }
 
     public static void createInputStyle(JTextField input) {
         input.setFont(defaultFont);
-        input.setBorder(paddingBorder);
+        input.setBorder(defaultPaddingBorder);
         input.setPreferredSize(defaultDimension);
         input.setBackground(bgColor);
         input.setForeground(lightColor);
@@ -70,13 +83,13 @@ public class UIComponents {
 
         input.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
-                input.setBackground(grayColor);
+                input.setBackground(containerColor);
                 input.setBorder(compoundBorder);
             }
             
             public void focusLost(FocusEvent e) {
                 input.setBackground(bgColor);
-                input.setBorder(paddingBorder);
+                input.setBorder(defaultPaddingBorder);
             }
         });
     }
@@ -156,7 +169,7 @@ public class UIComponents {
         JButton button = new JButton(value);
         createButtonStyle(button);
 
-        button.setBackground(grayColor);
+        button.setBackground(containerColor);
         button.setForeground(primaryColor);
 
         button.addFocusListener(new FocusListener() {
@@ -181,6 +194,55 @@ public class UIComponents {
 
         return button;
     }    
+
+    public static JRadioButton createRadioButton(String value) {
+        JRadioButton button = new JRadioButton(value);
+        button.setBackground(containerColor);
+        button.setForeground(lightColor);
+        button.setFont(defaultFont);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.setIconTextGap(8);
+
+        button.setIcon(new ImageIcon("assets/radio_button.png"));
+        button.setSelectedIcon(new ImageIcon("assets/radio_button_selected.png"));
+
+        return button;
+    }
+
+    public static JPanel createContainer(JComponent components[]) {
+        JPanel container = new JPanel();
+
+        container.setLayout(new GridBagLayout());
+        container.setBorder(largePaddingBorder);
+        container.setBackground(containerColor);
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.gridx = 0;
+
+        for (int i = 0; i < components.length; i++) {
+            JComponent component = components[i];
+
+            Insets insets = new Insets(0, 0, 0, 0);
+
+            if (component instanceof JTextField) {
+                insets = UIComponents.inputInsets;
+            } else if (component instanceof JLabel) {
+                insets = UIComponents.textInsets;
+            } else if (component instanceof JButton) {
+                insets = UIComponents.buttonInsets;
+            }
+
+            gridBagConstraints.gridy = i;
+            gridBagConstraints.insets = insets;
+            container.add(component, gridBagConstraints);
+        }
+
+        return container;
+    }
 
     public static Font loadFont(String path, int size) {
         try {

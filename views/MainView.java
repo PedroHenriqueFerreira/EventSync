@@ -16,14 +16,15 @@ public class MainView extends JFrame {
 
         this.createViews();
 
-        this.setSize(1280, 720);
+        this.setSize(1920, 1080);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
     public void createViews() {
-        this.add(new RegisterView(this), "register");
+        this.add(new HomeView(this), "home");
         this.add(new LoginView(this), "login");
+        this.add(new RegisterView(this), "register");
     }
 
     public void changeScreen(String screen) {
