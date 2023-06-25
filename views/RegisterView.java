@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -21,6 +22,9 @@ public class RegisterView extends JPanel {
         this.setBackground(UIComponents.bgColor);
         this.setLayout(new GridBagLayout());
         
+        ImageIcon logo = new ImageIcon("assets/logo.png");
+        JLabel logoLabel = new JLabel(logo);
+
         JLabel nameText = UIComponents.createText("Nome completo:");
         JTextField nameInput = UIComponents.createInput("");
 
@@ -53,6 +57,7 @@ public class RegisterView extends JPanel {
         loginButton.addActionListener(e -> mainView.changeScreen("login"));
         
         JComponent[] components = {
+            logoLabel,
             nameText, nameInput, 
             emailText, emailInput,
             phoneText, phoneInput,

@@ -2,6 +2,7 @@ package views;
 
 import java.awt.GridBagLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -14,6 +15,9 @@ public class LoginView extends JPanel {
     public LoginView(MainView mainView) {
         this.setBackground(UIComponents.bgColor);
         this.setLayout(new GridBagLayout());
+
+        ImageIcon logo = new ImageIcon("assets/logo.png");
+        JLabel logoLabel = new JLabel(logo);
         
         JLabel emailText = UIComponents.createText("Email:");
         JTextField emailInput = UIComponents.createInput("");
@@ -28,6 +32,7 @@ public class LoginView extends JPanel {
         registerButton.addActionListener(e -> mainView.changeScreen("register"));
         
         JComponent[] components = {
+            logoLabel,
             emailText, emailInput,
             passwordText, passwordInput,
             loginButton, registerButton
