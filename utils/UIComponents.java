@@ -41,9 +41,10 @@ public class UIComponents {
     public static final Color grayColor = new Color(169, 163, 181);
 
     public static final Font defaultFont = loadFont("assets/Poppins-Regular.ttf", 18);
-    public static final Font largeFont = loadFont("assets/Poppins-Regular.ttf", 24);
+    public static final Font largeFont = loadFont("assets/Poppins-SemiBold.ttf", 27);
 
     public static final Dimension defaultDimension = new Dimension(400, 45);
+    public static final Dimension smallDimension = new Dimension(175, 45);
     
     public static final Border defaultLineBorder = new LineBorder(primaryColor, 2);
     
@@ -58,6 +59,7 @@ public class UIComponents {
     public static final Insets textInsets = new Insets(0, 0, 10, 0);
     public static final Insets inputInsets = new Insets(0, 0, 20, 0);
     public static final Insets buttonInsets = new Insets(20, 0, 0, 0);
+    public static final Insets imageInsets = new Insets(20, 0, 40, 0);
 
     public static JLabel createText(String value) {
         JLabel text = new JLabel(value);
@@ -73,7 +75,21 @@ public class UIComponents {
         return text;
     }
 
-    public static void createInputStyle(JTextField input) {
+    public static JLabel createTitle(String value) {
+        JLabel title = new JLabel(value);
+
+        title.setFont(largeFont);
+        title.setForeground(lightColor);
+
+        int width = (int) defaultDimension.getWidth();
+        int height = (int) title.getPreferredSize().getHeight();
+        
+        title.setPreferredSize(new Dimension(width, height));        
+
+        return title;
+    }
+
+    private static void createInputStyle(JTextField input) {
         input.setFont(defaultFont);
         input.setBorder(defaultPaddingBorder);
         input.setPreferredSize(defaultDimension);
@@ -127,7 +143,7 @@ public class UIComponents {
 
     }
 
-    public static void createButtonStyle(JButton button) {
+    private static void createButtonStyle(JButton button) {
         button.setFont(defaultFont);
         button.setBorder(compoundBorder);
         button.setPreferredSize(defaultDimension);
@@ -231,7 +247,12 @@ public class UIComponents {
             if (component instanceof JTextField) {
                 insets = UIComponents.inputInsets;
             } else if (component instanceof JLabel) {
-                insets = UIComponents.textInsets;
+                JLabel jLabel = (JLabel) component;
+                if (jLabel.getIcon() == null) {
+                    insets = UIComponents.textInsets;
+                } else {
+                    insets = UIComponents.imageInsets;
+                }
             } else if (component instanceof JButton) {
                 insets = UIComponents.buttonInsets;
             }

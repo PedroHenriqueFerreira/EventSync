@@ -25,6 +25,8 @@ public class RegisterView extends JPanel {
         ImageIcon logo = new ImageIcon("assets/logo.png");
         JLabel logoLabel = new JLabel(logo);
 
+        JLabel title = UIComponents.createTitle("Realize seu cadastro!");
+
         JLabel nameText = UIComponents.createText("Nome completo:");
         JTextField nameInput = UIComponents.createInput("");
 
@@ -38,6 +40,8 @@ public class RegisterView extends JPanel {
         JTextField passwordInput = UIComponents.createPasswordInput("");
 
         JButton registerButton = UIComponents.createButton("Fazer registro");
+
+        registerButton.addActionListener(e -> mainView.changeScreen("login"));
 
         JRadioButton organizer = UIComponents.createRadioButton("Sou organizador");
         JRadioButton participant = UIComponents.createRadioButton("Sou participante");
@@ -58,6 +62,7 @@ public class RegisterView extends JPanel {
         
         JComponent[] components = {
             logoLabel,
+            title,
             nameText, nameInput, 
             emailText, emailInput,
             phoneText, phoneInput,

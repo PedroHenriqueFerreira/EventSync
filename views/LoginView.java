@@ -18,6 +18,8 @@ public class LoginView extends JPanel {
 
         ImageIcon logo = new ImageIcon("assets/logo.png");
         JLabel logoLabel = new JLabel(logo);
+
+        JLabel title = UIComponents.createTitle("Seja bem-vindo de volta!");
         
         JLabel emailText = UIComponents.createText("Email:");
         JTextField emailInput = UIComponents.createInput("");
@@ -26,6 +28,8 @@ public class LoginView extends JPanel {
         JTextField passwordInput = UIComponents.createPasswordInput("");
 
         JButton loginButton = UIComponents.createButton("Fazer login");
+        
+        loginButton.addActionListener(e -> mainView.changeScreen("home"));
 
         JButton registerButton = UIComponents.createLightButton("Não possuo conta");
         
@@ -33,6 +37,7 @@ public class LoginView extends JPanel {
         
         JComponent[] components = {
             logoLabel,
+            title,
             emailText, emailInput,
             passwordText, passwordInput,
             loginButton, registerButton

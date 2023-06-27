@@ -23,8 +23,10 @@ public class MainView extends JFrame {
 
     public void createViews() {
         this.add(new HomeView(this), "home");
+        this.add(new AccountView(this), "account");
         this.add(new LoginView(this), "login");
         this.add(new RegisterView(this), "register");
+        this.add(new UpdateAccountView(this), "update_account");
     }
 
     public void changeScreen(String screen) {
