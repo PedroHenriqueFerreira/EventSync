@@ -1,10 +1,15 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.AdjustmentListener;
+import java.util.ArrayList;
+import java.util.concurrent.Flow;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -12,7 +17,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import utils.UIComponents;
 
@@ -29,7 +37,7 @@ public class HomeView extends JPanel {
         JPanel options = new JPanel();
         options.setBackground(getBackground());
 
-        ImageIcon logo = new ImageIcon("assets/logo.png");
+        ImageIcon logo = new ImageIcon("images/logo.png");
         JLabel logoLabel = new JLabel(logo);
         JButton account = UIComponents.createButton("Minha conta");
         account.setPreferredSize(UIComponents.smallDimension);
@@ -57,21 +65,34 @@ public class HomeView extends JPanel {
         this.add(header, gridBagConstraints);
 
         JPanel myEventsPanel = new JPanel();
+        myEventsPanel.setBackground(getBackground());
 
+        myEventsPanel.setLayout(new GridLayout(0, 4, 5, 5));
+        
         JScrollPane scrollPane = new JScrollPane(myEventsPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(1000, 500));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            protected void configureScrollBarColors() {
+                this.thumbColor = Color.gray;
+                this.trackColor = Color.lightGray;
+                this.scrollBarWidth = 10;
+            }
+        });
+        scrollPane.setBorder(null);
 
-        gridBagConstraints.fill = GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1;
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.gridy = 1;
-        this.add(myEventsPanel, gridBagConstraints);
+        gridBagConstraints.weighty = 1.0;
+
+        this.add(scrollPane, gridBagConstraints);
 
         for (int i = 0; i < 20; i++) {
             JLabel name = UIComponents.createTitle("Master Class resinas");
     
             JLabel description = UIComponents.createText("Venha se divertir aprendendo sobre resinas wwwe wef wefwef wef wefwefwe wefwefwef");
-            // description.setForeground(UIComponents.grayColor);
     
             JLabel address = UIComponents.createText("Rua José de Alencar, 135, Cuiabá - MT");
             address.setForeground(UIComponents.grayColor);
@@ -81,17 +102,17 @@ public class HomeView extends JPanel {
     
             JButton expandButton = UIComponents.createLightButton("Ver mais detalhes");
     
-            expandButton.addActionListener(e -> mainView.changeScreen("login"));
+            expandButton.addActionListener(e -> mainView.changeScreen("event"));
     
-            JComponent[] components = {
-                name,
-                description,
-                address,
-                date,
-                expandButton
-            };
+            ArrayList<JComponent> components = new ArrayList<JComponent>();
+
+            components.add(name);
+            components.add(description);
+            components.add(address);
+            components.add(date);
+            components.add(expandButton);
     
-            JPanel container = UIComponents.createContainer(components);       
+            JPanel container = UIComponents.createContainer(components);
             myEventsPanel.add(container);
         }
 

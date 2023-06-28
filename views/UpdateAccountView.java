@@ -3,6 +3,7 @@ package views;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -22,7 +23,7 @@ public class UpdateAccountView extends JPanel {
         this.setBackground(UIComponents.bgColor);
         this.setLayout(new GridBagLayout());
         
-        ImageIcon logo = new ImageIcon("assets/logo.png");
+        ImageIcon logo = new ImageIcon("images/logo.png");
         JLabel logoLabel = new JLabel(logo);
 
         JLabel title = UIComponents.createTitle("Atualizar conta");
@@ -45,15 +46,20 @@ public class UpdateAccountView extends JPanel {
 
         backButton.addActionListener(e -> mainView.changeScreen("account"));
         
-        JComponent[] components = {
-            logoLabel,
-            title,
-            nameText, nameInput, 
-            emailText, emailInput,
-            phoneText, phoneInput,
-            passwordText, passwordInput,
-            updateButton, backButton
-        };
+        ArrayList<JComponent> components = new ArrayList<JComponent>();
+
+        components.add(logoLabel);
+        components.add(title);
+        components.add(nameText); 
+        components.add(nameInput); 
+        components.add(emailText); 
+        components.add(emailInput);
+        components.add(phoneText); 
+        components.add(phoneInput);
+        components.add(passwordText); 
+        components.add(passwordInput);
+        components.add(updateButton); 
+        components.add(backButton);
 
         JPanel container = UIComponents.createContainer(components);        
         this.add(container);

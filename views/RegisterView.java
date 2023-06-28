@@ -2,76 +2,66 @@ package views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 
-import utils.UIComponents;
+import utils.Components;
+import utils.Constraints;
 
 public class RegisterView extends JPanel {
     public RegisterView(MainView mainView) {
-        this.setBackground(UIComponents.bgColor);
+        this.setBackground(getBackground());
         this.setLayout(new GridBagLayout());
-        
-        ImageIcon logo = new ImageIcon("assets/logo.png");
-        JLabel logoLabel = new JLabel(logo);
-
-        JLabel title = UIComponents.createTitle("Realize seu cadastro!");
-
-        JLabel nameText = UIComponents.createText("Nome completo:");
-        JTextField nameInput = UIComponents.createInput("");
-
-        JLabel emailText = UIComponents.createText("Email:");
-        JTextField emailInput = UIComponents.createInput("");
-
-        JLabel phoneText = UIComponents.createText("Telefone:");
-        JTextField phoneInput = UIComponents.createMaskInput("", "(##) # ####-####");
-        
-        JLabel passwordText = UIComponents.createText("Senha:");
-        JTextField passwordInput = UIComponents.createPasswordInput("");
-
-        JButton registerButton = UIComponents.createButton("Fazer registro");
-
-        registerButton.addActionListener(e -> mainView.changeScreen("login"));
-
-        JRadioButton organizer = UIComponents.createRadioButton("Sou organizador");
-        JRadioButton participant = UIComponents.createRadioButton("Sou participante");
+    
+        JRadioButton adminRadioButton = Components.createRadioButton("Sou organizador");
+        JRadioButton participantRadioButton = Components.createRadioButton("Sou participante");
 
         ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(organizer);
-        buttonGroup.add(participant);
+        buttonGroup.add(adminRadioButton);
+        buttonGroup.add(participantRadioButton);
         
         JPanel radioButtons = new JPanel();
-        radioButtons.setBackground(UIComponents.containerColor);
+        radioButtons.setBackground(Constraints.CONTAINER_COLOR);
+        radioButtons.add(adminRadioButton);
+        radioButtons.add(participantRadioButton);
 
-        radioButtons.add(organizer);
-        radioButtons.add(participant);
+        JButton registerButton = Components.createButton("Fazer registro");
+        registerButton.addActionListener(e -> mainView.changeScreen("login"));
 
-        JButton loginButton = UIComponents.createLightButton("Já possuo conta");
-
+        JButton loginButton = Components.createLightButton("Já possuo conta");
         loginButton.addActionListener(e -> mainView.changeScreen("login"));
         
-        JComponent[] components = {
-            logoLabel,
-            title,
-            nameText, nameInput, 
-            emailText, emailInput,
-            phoneText, phoneInput,
-            passwordText, passwordInput,
-            radioButtons,
-            registerButton, loginButton
-        };
+        ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-        JPanel container = UIComponents.createContainer(components);        
-        this.add(container);
+        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
+        components.add(Components.createTitle("Realize seu cadastro!"));
+        components.add(Components.createLightText("Nome completo:")); 
+        components.add(Components.createInput("")); 
+        components.add(Components.createLightText("Email:")); 
+        components.add(Components.createInput(""));
+        components.add(Components.createLightText("Telefone:")); 
+        components.add(Components.createMaskInput("(##) # ####-####", ""));
+        components.add(Components.createLightText("Senha:")); 
+        components.add(Components.createPasswordInput(""));
+        components.add(radioButtons);
+        components.add(registerButton); 
+        components.add(loginButton);
+        
+        JScrollPane container = Components.createContainer(components);        
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 1.0;
+
+        this.add(container, gridBagConstraints);
     }
 }

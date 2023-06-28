@@ -1,49 +1,49 @@
 package views;
 
+import java.awt.Container;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 
-import utils.UIComponents;
+import utils.Components;
+import utils.Constraints;
 
 public class LoginView extends JPanel {
     public LoginView(MainView mainView) {
-        this.setBackground(UIComponents.bgColor);
+        this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
-
-        ImageIcon logo = new ImageIcon("assets/logo.png");
-        JLabel logoLabel = new JLabel(logo);
-
-        JLabel title = UIComponents.createTitle("Seja bem-vindo de volta!");
         
-        JLabel emailText = UIComponents.createText("Email:");
-        JTextField emailInput = UIComponents.createInput("");
-
-        JLabel passwordText = UIComponents.createText("Senha:");
-        JTextField passwordInput = UIComponents.createPasswordInput("");
-
-        JButton loginButton = UIComponents.createButton("Fazer login");
-        
+        JButton loginButton = Components.createButton("Fazer login");
         loginButton.addActionListener(e -> mainView.changeScreen("home"));
 
-        JButton registerButton = UIComponents.createLightButton("Não possuo conta");
-        
+        JButton registerButton = Components.createLightButton("Não possuo conta");
         registerButton.addActionListener(e -> mainView.changeScreen("register"));
         
-        JComponent[] components = {
-            logoLabel,
-            title,
-            emailText, emailInput,
-            passwordText, passwordInput,
-            loginButton, registerButton
-        };
+        ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-        JPanel container = UIComponents.createContainer(components);
-        this.add(container);
+        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
+        components.add(Components.createTitle("Seja bem-vindo de volta!"));
+        components.add(Components.createLightText("Email:"));
+        components.add(Components.createInput(""));
+        components.add(Components.createLightText("Senha:"));
+        components.add(Components.createPasswordInput(""));
+        components.add(loginButton);
+        components.add(registerButton);
+
+        JScrollPane container = Components.createContainer(components);
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 1.0;
+
+        this.add(container, gridBagConstraints);
     }
 }

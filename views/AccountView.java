@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,7 +16,7 @@ public class AccountView extends JPanel {
         this.setBackground(UIComponents.bgColor);
         this.setLayout(new GridBagLayout());
 
-        ImageIcon logo = new ImageIcon("assets/logo.png");
+        ImageIcon logo = new ImageIcon("images/logo.png");
         JLabel logoLabel = new JLabel(logo);
 
         JLabel title = UIComponents.createTitle("Minha conta");
@@ -44,20 +45,20 @@ public class AccountView extends JPanel {
         
         backButton.addActionListener(e -> mainView.changeScreen("home"));
 
-        JComponent[] components = {
-            logoLabel,
-            title,
-            nameTitle,
-            nameText,
-            emailTitle,
-            emailText,
-            passwordTitle,
-            passwordText,
-            typeTitle,
-            typeText,
-            updateButton,
-            backButton
-        };
+        ArrayList<JComponent> components = new ArrayList<JComponent>();
+
+        components.add(logoLabel);
+        components.add(title);
+        components.add(nameTitle);
+        components.add(nameText);
+        components.add(emailTitle);
+        components.add(emailText);
+        components.add(passwordTitle);
+        components.add(passwordText);
+        components.add(typeTitle);
+        components.add(typeText);
+        components.add(updateButton);
+        components.add(backButton);        
 
         JPanel container = UIComponents.createContainer(components);
         this.add(container);
