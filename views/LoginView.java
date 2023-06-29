@@ -29,9 +29,9 @@ public class LoginView extends JPanel {
 
         components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
         components.add(Components.createTitle("Seja bem-vindo de volta!"));
-        components.add(Components.createLightText("Email:"));
+        components.add(Components.createGrayText("Email:"));
         components.add(Components.createInput(""));
-        components.add(Components.createLightText("Senha:"));
+        components.add(Components.createGrayText("Senha:"));
         components.add(Components.createPasswordInput(""));
         components.add(loginButton);
         components.add(registerButton);
@@ -39,7 +39,6 @@ public class LoginView extends JPanel {
         JScrollPane container = Components.createContainer(components);
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.weightx = 1.0;

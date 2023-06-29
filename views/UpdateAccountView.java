@@ -2,66 +2,50 @@ package views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 
-import utils.UIComponents;
+import utils.Components;
+import utils.Constraints;
 
 public class UpdateAccountView extends JPanel {
     public UpdateAccountView(MainView mainView) {
-        this.setBackground(UIComponents.bgColor);
+        this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
-        
-        ImageIcon logo = new ImageIcon("images/logo.png");
-        JLabel logoLabel = new JLabel(logo);
 
-        JLabel title = UIComponents.createTitle("Atualizar conta");
+        JButton updateButton = Components.createButton("Atualizar");
+        updateButton.addActionListener(e -> mainView.changeScreen("update_account"));
 
-        JLabel nameText = UIComponents.createText("Nome completo:");
-        JTextField nameInput = UIComponents.createInput("Pedro Henrique Fereira");
+        JButton backButton = Components.createLightButton("Voltar");
+        backButton.addActionListener(e -> mainView.changeScreen("home"));
 
-        JLabel emailText = UIComponents.createText("Email:");
-        JTextField emailInput = UIComponents.createInput("HPedro09062004@gmail.com");
-
-        JLabel phoneText = UIComponents.createText("Telefone:");
-        JTextField phoneInput = UIComponents.createMaskInput("(88) 9 9349-3909", "(##) # ####-####");
-        
-        JLabel passwordText = UIComponents.createText("Senha:");
-        JTextField passwordInput = UIComponents.createPasswordInput("AAAAAAAAAAA");
-
-        JButton updateButton = UIComponents.createButton("Atualizar");
-
-        JButton backButton = UIComponents.createLightButton("Voltar");
-
-        backButton.addActionListener(e -> mainView.changeScreen("account"));
-        
         ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-        components.add(logoLabel);
-        components.add(title);
-        components.add(nameText); 
-        components.add(nameInput); 
-        components.add(emailText); 
-        components.add(emailInput);
-        components.add(phoneText); 
-        components.add(phoneInput);
-        components.add(passwordText); 
-        components.add(passwordInput);
-        components.add(updateButton); 
-        components.add(backButton);
+        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
+        components.add(Components.createTitle("Atualizar conta"));
+        components.add(Components.createGrayText("Nome Completo:"));
+        components.add(Components.createInput("Pedro Henrique Ferreira da Silva"));
+        components.add(Components.createGrayText("Email:"));
+        components.add(Components.createInput("HPedro09062004@gmail.com"));
+        components.add(Components.createGrayText("Senha:"));
+        components.add(Components.createPasswordInput("********"));
+        components.add(Components.createGrayText("Cargo:"));
+        components.add(Components.createInput("Sou participante"));
+        components.add(updateButton);
+        components.add(backButton);        
 
-        JPanel container = UIComponents.createContainer(components);        
-        this.add(container);
+        JScrollPane container = Components.createContainer(components);
+
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 1.0;
+
+        this.add(container, gridBagConstraints);
     }
 }

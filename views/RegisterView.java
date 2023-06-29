@@ -42,13 +42,13 @@ public class RegisterView extends JPanel {
 
         components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
         components.add(Components.createTitle("Realize seu cadastro!"));
-        components.add(Components.createLightText("Nome completo:")); 
+        components.add(Components.createGrayText("Nome completo:")); 
         components.add(Components.createInput("")); 
-        components.add(Components.createLightText("Email:")); 
+        components.add(Components.createGrayText("Email:")); 
         components.add(Components.createInput(""));
-        components.add(Components.createLightText("Telefone:")); 
+        components.add(Components.createGrayText("Telefone:")); 
         components.add(Components.createMaskInput("(##) # ####-####", ""));
-        components.add(Components.createLightText("Senha:")); 
+        components.add(Components.createGrayText("Senha:")); 
         components.add(Components.createPasswordInput(""));
         components.add(radioButtons);
         components.add(registerButton); 
