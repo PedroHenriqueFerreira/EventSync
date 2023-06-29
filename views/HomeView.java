@@ -22,30 +22,30 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import utils.UIComponents;
+import utils.Components;
+import utils.Constraints;
 
 public class HomeView extends JPanel {
     public HomeView(MainView mainView) {
+        this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
-        this.setBackground(UIComponents.bgColor);
-        this.setBorder(UIComponents.largePaddingBorder);
         
-        JPanel header = new JPanel();
+        this.setBorder(Constraints.LARGE_PADDING_BORDER);
+        
+        JPanel header = new JPanel(new BorderLayout());
         header.setBackground(getBackground());
-        header.setLayout(new BorderLayout());
         
         JPanel options = new JPanel();
         options.setBackground(getBackground());
 
-        ImageIcon logo = new ImageIcon("images/logo.png");
-        JLabel logoLabel = new JLabel(logo);
-        JButton account = UIComponents.createButton("Minha conta");
-        account.setPreferredSize(UIComponents.smallDimension);
+        JLabel logoLabel = new JLabel(Constraints.LOGO_IMAGE_ICON);
+        JButton account = Components.createButton("Minha conta");
+        account.setPreferredSize(Constraints.SMALL_DIMENSION);
 
         account.addActionListener(e -> mainView.changeScreen("account"));
 
-        JButton logoutButton = UIComponents.createLightButton("Sair");
-        logoutButton.setPreferredSize(UIComponents.smallDimension);
+        JButton logoutButton = Components.createLightButton("Sair");
+        logoutButton.setPreferredSize(Constraints.SMALL_DIMENSION);
 
         logoutButton.addActionListener(e -> mainView.changeScreen("login"));
 
@@ -66,22 +66,8 @@ public class HomeView extends JPanel {
 
         JPanel myEventsPanel = new JPanel();
         myEventsPanel.setBackground(getBackground());
-
-        myEventsPanel.setLayout(new GridLayout(0, 4, 5, 5));
         
-        JScrollPane scrollPane = new JScrollPane(myEventsPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-            protected void configureScrollBarColors() {
-                this.thumbColor = Color.gray;
-                this.trackColor = Color.lightGray;
-                this.scrollBarWidth = 10;
-            }
-        });
-        scrollPane.setBorder(null);
-
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollPane = Components.createScrollBar(myEventsPanel);
 
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.gridy = 1;
@@ -90,18 +76,14 @@ public class HomeView extends JPanel {
         this.add(scrollPane, gridBagConstraints);
 
         for (int i = 0; i < 20; i++) {
-            JLabel name = UIComponents.createTitle("Master Class resinas");
+            JLabel name = Components.createTitle("Master Class resinas");
     
-            JLabel description = UIComponents.createText("Venha se divertir aprendendo sobre resinas wwwe wef wefwef wef wefwefwe wefwefwef");
+            JLabel description = Components.createLightText("Venha se divertir aprendendo sobre resinas wwwe wef wefwef wef wefwefwe wefwefwef");
     
-            JLabel address = UIComponents.createText("Rua José de Alencar, 135, Cuiabá - MT");
-            address.setForeground(UIComponents.grayColor);
+            JLabel address = Components.createGrayText("Rua José de Alencar, 135, Cuiabá - MT");
+            JLabel date = Components.createGrayText("Quinta-feira, 29, junho");
     
-            JLabel date = UIComponents.createText("Quinta-feira, 29, junho");
-            date.setForeground(UIComponents.grayColor);
-    
-            JButton expandButton = UIComponents.createLightButton("Ver mais detalhes");
-    
+            JButton expandButton = Components.createLightButton("Ver mais detalhes");
             expandButton.addActionListener(e -> mainView.changeScreen("event"));
     
             ArrayList<JComponent> components = new ArrayList<JComponent>();
@@ -112,7 +94,7 @@ public class HomeView extends JPanel {
             components.add(date);
             components.add(expandButton);
     
-            JPanel container = UIComponents.createContainer(components);
+            JPanel container = Components.createContainer(components);
             myEventsPanel.add(container);
         }
 

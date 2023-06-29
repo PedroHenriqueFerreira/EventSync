@@ -36,13 +36,9 @@ public class LoginView extends JPanel {
         components.add(loginButton);
         components.add(registerButton);
 
-        JScrollPane container = Components.createContainer(components);
-
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.weightx = 1.0;
-
-        this.add(container, gridBagConstraints);
+        this.add(
+            Components.createScrollBar(Components.createContainer(components)), 
+            Components.createScrollBarConstraints()
+        );
     }
 }

@@ -287,19 +287,32 @@ public class Components {
         return button;
     }
 
-    public static JScrollPane createContainer(ArrayList<JComponent> components) {
+    public static JScrollPane createScrollBar(JPanel container) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Constraints.BG_COLOR);
 
         GridBagConstraints panelConstraints = new GridBagConstraints();
         panelConstraints.insets = Constraints.CONTAINER_INSETS;
-        
-        JPanel container = new JPanel(new GridBagLayout());
 
         panel.add(container, panelConstraints);
-        
-        JScrollPane scrollBar = Components.createScrollBar(panel);
 
+        JScrollPane scrollBar = new JScrollPane(panel);
+        createScrollBarStyle(scrollBar);
+
+        return scrollBar;
+    }
+
+    public static GridBagConstraints createScrollBarConstraints() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 1.0;
+
+        return gridBagConstraints;
+    }
+
+    public static JPanel createContainer(ArrayList<JComponent> components) {        
+        JPanel container = new JPanel(new GridBagLayout());
         container.setBorder(Constraints.LARGE_PADDING_BORDER);
         container.setBackground(Constraints.CONTAINER_COLOR);
 
@@ -313,6 +326,7 @@ public class Components {
 
             if (component instanceof JLabel) {
                 JLabel label = (JLabel) component;
+                
                 if (label.getIcon() == null) {
                     gridBagConstraints.insets = Constraints.TEXT_INSETS;
                 } else {
@@ -328,6 +342,6 @@ public class Components {
             container.add(component, gridBagConstraints);
         }
 
-        return scrollBar;
+        return container;
     }
 }

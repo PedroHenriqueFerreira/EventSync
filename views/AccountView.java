@@ -1,7 +1,5 @@
 package views;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
@@ -9,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import utils.Components;
 import utils.Constraints;
@@ -40,13 +37,9 @@ public class AccountView extends JPanel {
         components.add(updateButton);
         components.add(backButton);        
 
-        JScrollPane container = Components.createContainer(components);
-
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.weightx = 1.0;
-
-        this.add(container, gridBagConstraints);
+        this.add(
+            Components.createScrollBar(Components.createContainer(components)), 
+            Components.createScrollBarConstraints()
+        );
     }
 }

@@ -43,10 +43,16 @@ public class Constraints {
 
     public static final int ICON_TEXT_GAP = 8;
 
+    public static final int SMALL_COMPONENT_WIDTH = 200;
     public static final int DEFAULT_COMPONENT_WIDTH = 400;
     public static final int LARGE_COMPONENT_WIDTH = 700;
 
     public static final int DEFAULT_COMPONENT_HEIGHT = 45;
+
+    public static final Dimension SMALL_DIMENSION = new Dimension(
+        SMALL_COMPONENT_WIDTH,
+        DEFAULT_COMPONENT_HEIGHT
+    );
 
     public static final Dimension DEFAULT_DIMENSION = new Dimension(
         DEFAULT_COMPONENT_WIDTH,

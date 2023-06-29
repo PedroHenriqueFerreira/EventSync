@@ -22,13 +22,13 @@ public class MainView extends JFrame {
     }
 
     public void createViews() {
+        this.add(new HomeView(this), "home");
         this.add(new UpdateAccountView(this), "update_account");
         this.add(new AccountView(this), "account");
         this.add(new UpdateEventView(this), "update_event");
         this.add(new EventView(this), "event");
         this.add(new LoginView(this), "login");
         this.add(new RegisterView(this), "register");
-        // this.add(new HomeView(this), "home");
     }
 
     public void changeScreen(String screen) {
