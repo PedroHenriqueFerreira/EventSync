@@ -1,17 +1,12 @@
 package views;
 
-import java.awt.Container;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
-import utils.Components;
+import utils.ComponentsFactory;
 import utils.Constraints;
 
 public class LoginView extends JPanel {
@@ -19,26 +14,27 @@ public class LoginView extends JPanel {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
         
-        JButton loginButton = Components.createButton("Fazer login");
+        JButton loginButton = ComponentsFactory.createButton("Fazer login");
         loginButton.addActionListener(e -> mainView.changeScreen("home"));
 
-        JButton registerButton = Components.createLightButton("Não possuo conta");
+        JButton registerButton = ComponentsFactory.createLightButton("Não possuo conta");
         registerButton.addActionListener(e -> mainView.changeScreen("register"));
-        
-        ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
-        components.add(Components.createTitle("Seja bem-vindo de volta!"));
-        components.add(Components.createGrayText("Email:"));
-        components.add(Components.createInput(""));
-        components.add(Components.createGrayText("Senha:"));
-        components.add(Components.createPasswordInput(""));
-        components.add(loginButton);
-        components.add(registerButton);
+        JPanel container = ComponentsFactory.createContainer(
+            new JLabel(Constraints.LOGO_IMAGE_ICON),
+            ComponentsFactory.createTitle("Seja bem-vindo de volta!"),
+            ComponentsFactory.createGrayText("Email:"),
+            ComponentsFactory.createInput(""),
+            ComponentsFactory.createGrayText("Senha:"),
+            ComponentsFactory.createPasswordInput(""),
+            ComponentsFactory.createLightText(" "),
+            loginButton,
+            registerButton
+        );
 
         this.add(
-            Components.createScrollBar(Components.createContainer(components)), 
-            Components.createScrollBarConstraints()
+            ComponentsFactory.createScrollBar(container), 
+            ComponentsFactory.createScrollBarConstraints()
         );
     }
 }

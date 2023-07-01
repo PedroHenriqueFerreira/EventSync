@@ -1,114 +1,166 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import utils.Components;
+import utils.ComponentsFactory;
 import utils.Constraints;
 
 public class HomeView extends JPanel {
     public HomeView(MainView mainView) {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
-        
         this.setBorder(Constraints.LARGE_PADDING_BORDER);
         
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(getBackground());
         
-        JPanel options = new JPanel();
-        options.setBackground(getBackground());
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setBackground(getBackground());
 
-        JLabel logoLabel = new JLabel(Constraints.LOGO_IMAGE_ICON);
-        JButton account = Components.createButton("Minha conta");
-        account.setPreferredSize(Constraints.SMALL_DIMENSION);
+        JLabel logo = new JLabel(Constraints.LOGO_IMAGE_ICON);
 
-        account.addActionListener(e -> mainView.changeScreen("account"));
+        JButton accountButton = ComponentsFactory.createButton("Minha conta");
+        accountButton.setPreferredSize(Constraints.SMALL_DIMENSION);
+        accountButton.addActionListener(e -> mainView.changeScreen("account"));
 
-        JButton logoutButton = Components.createLightButton("Sair");
+        JButton logoutButton = ComponentsFactory.createLightButton("Sair");
         logoutButton.setPreferredSize(Constraints.SMALL_DIMENSION);
-
         logoutButton.addActionListener(e -> mainView.changeScreen("login"));
 
-        options.add(account);
-        options.add(logoutButton);
+        optionsPanel.add(accountButton);
+        optionsPanel.add(logoutButton);
+
+        JPanel searchPanel = new JPanel();
+        searchPanel.setBackground(getBackground());
+
+        JButton searchButton = ComponentsFactory.createButton("Pesquisar");
+        searchButton.setPreferredSize(Constraints.SMALL_DIMENSION);
+
+        searchPanel.add(ComponentsFactory.createSearchInput(""));
+        searchPanel.add(searchButton);
+
         
-        header.add(logoLabel, BorderLayout.WEST);
-        header.add(options, BorderLayout.EAST);
+        header.add(logo, BorderLayout.WEST);
+        header.add(searchPanel, BorderLayout.CENTER);
+        header.add(optionsPanel, BorderLayout.EAST);
         
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
 
         this.add(header, gridBagConstraints);
 
-        JPanel mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(getBackground());
 
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
+        GridBagConstraints scrollBarConstraints = ComponentsFactory.createScrollBarConstraints();
+        scrollBarConstraints.gridy = 1;
 
-        this.add(mainPanel, gridBagConstraints);
-
-        JPanel myEventsPanel = new JPanel();
-        myEventsPanel.setBackground(getBackground());
-
-        JPanel allEventsPanel = new JPanel();
-        allEventsPanel.setBackground(getBackground());
+        this.add(ComponentsFactory.createScrollBar(mainPanel), scrollBarConstraints);
         
-        GridBagConstraints mainPanelConstraints = new GridBagConstraints();
-        mainPanelConstraints.anchor = GridBagConstraints.NORTH;
-        mainPanelConstraints.fill = GridBagConstraints.HORIZONTAL;
-        mainPanelConstraints.weightx = 1.0;
+        
+        gridBagConstraints.gridy = 0;
+        mainPanel.add(ComponentsFactory.createTitle("Meus eventos"), gridBagConstraints);
 
-        mainPanelConstraints.gridy = 0;
-        mainPanel.add(Components.createScrollBar(myEventsPanel), mainPanelConstraints);
-        mainPanelConstraints.gridy = 1;
-        mainPanel.add(Components.createScrollBar(allEventsPanel), mainPanelConstraints);
+        JPanel myEventsPanel = new JPanel(new GridBagLayout());
+        myEventsPanel.setBackground(getBackground());
+        gridBagConstraints.gridy = 1;
+        mainPanel.add(myEventsPanel, gridBagConstraints);
 
-        for (int i = 0; i < 20; i++) {
-            JButton expandButton = Components.createLightButton("Ver mais detalhes");
+        gridBagConstraints.gridy = 2;
+        mainPanel.add(ComponentsFactory.createTitle("Todos os eventos"), gridBagConstraints);
+
+        JPanel allEventsPanel = new JPanel(new GridBagLayout());
+        allEventsPanel.setBackground(getBackground());
+        gridBagConstraints.gridy = 3;
+        mainPanel.add(allEventsPanel, gridBagConstraints);
+
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.weightx = 0;
+
+        for (int i = 0; i < 10; i++) {
+            JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
             expandButton.addActionListener(e -> mainView.changeScreen("event"));
-    
-            ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-            components.add(Components.createTitle("Master Class resinas"));
-            components.add(Components.createLightText("Venha se divertir aprendendo sobre resinas"));
-            components.add(Components.createGrayText("Rua José de Alencar, 135, Cuiabá - MT"));
-            components.add(Components.createGrayText("Quinta-feira, 29, junho"));
-            components.add(expandButton);
-    
-            JPanel container = Components.createContainer(components);
-            myEventsPanel.add(container);
+            JPanel container = ComponentsFactory.createContainer(
+                ComponentsFactory.createTitle("Master Class resinas"),
+                ComponentsFactory.createLightText("Venha se divertir..."),
+                ComponentsFactory.createGrayText("Rua José de Alencar, 135, Cuiabá - MT"),
+                ComponentsFactory.createGrayText("Quinta-feira, 29, junho"),
+                expandButton
+            );
+
+            gridBagConstraints.gridx = i % 4;
+            gridBagConstraints.gridy = i / 4;
+
+            if (gridBagConstraints.gridx == 0) {
+                gridBagConstraints.insets = new Insets(
+                    Constraints.CARD_INSETS.top, 
+                    0, 
+                    Constraints.CARD_INSETS.bottom, 
+                    Constraints.CARD_INSETS.right
+                );
+            } else if (gridBagConstraints.gridx == 3) {
+                gridBagConstraints.insets = new Insets(
+                    Constraints.CARD_INSETS.top, 
+                    Constraints.CARD_INSETS.left,
+                    Constraints.CARD_INSETS.bottom, 
+                    0
+                );
+            } else {
+                gridBagConstraints.insets = Constraints.CARD_INSETS;
+            }
+
+            myEventsPanel.add(container, gridBagConstraints);
         }
 
-        for (int i = 0; i < 20; i++) {
-            JButton expandButton = Components.createLightButton("Ver mais detalhes");
+        for (int i = 0; i < 10; i++) {
+            JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
             expandButton.addActionListener(e -> mainView.changeScreen("event"));
-    
-            ArrayList<JComponent> components = new ArrayList<JComponent>();
 
-            components.add(Components.createTitle("Master Class resinas"));
-            components.add(Components.createLightText("Venha se divertir aprendendo sobre resinas"));
-            components.add(Components.createGrayText("Rua José de Alencar, 135, Cuiabá - MT"));
-            components.add(Components.createGrayText("Quinta-feira, 29, junho"));
-            components.add(expandButton);
-    
-            JPanel container = Components.createContainer(components);
-            allEventsPanel.add(container);
+            JPanel container = ComponentsFactory.createContainer(
+                ComponentsFactory.createTitle("Master Class resinas"),
+                ComponentsFactory.createLightText("Venha se divertir..."),
+                ComponentsFactory.createGrayText("Rua José de Alencar, 135, Cuiabá - MT"),
+                ComponentsFactory.createGrayText("Quinta-feira, 29, junho"),
+                expandButton
+            );
+
+            gridBagConstraints.gridx = i % 4;
+            gridBagConstraints.gridy = i / 4;
+
+            if (gridBagConstraints.gridx == 0) {
+                gridBagConstraints.insets = new Insets(
+                    Constraints.CARD_INSETS.top, 
+                    0, 
+                    Constraints.CARD_INSETS.bottom, 
+                    Constraints.CARD_INSETS.right
+                );
+            } else if (gridBagConstraints.gridx == 3) {
+                gridBagConstraints.insets = new Insets(
+                    Constraints.CARD_INSETS.top, 
+                    Constraints.CARD_INSETS.left,
+                    Constraints.CARD_INSETS.bottom, 
+                    0
+                );
+            } else {
+                gridBagConstraints.insets = Constraints.CARD_INSETS;
+            }
+
+            allEventsPanel.add(container, gridBagConstraints);
         }
-
     }
 }

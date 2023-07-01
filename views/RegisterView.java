@@ -1,27 +1,61 @@
 package views;
 
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import utils.Components;
+import controllers.RegisterController;
+import models.Model;
+import utils.ComponentsFactory;
 import utils.Constraints;
+import utils.Observer;
 
-public class RegisterView extends JPanel {
-    public RegisterView(MainView mainView) {
+public class RegisterView extends JPanel implements Observer {
+    private Model model;
+    private RegisterController controller;
+
+    private JTextField nameTextField = ComponentsFactory.createInput("");
+    private JTextField emailTextField = ComponentsFactory.createInput("");
+    private JTextField phoneTextField = ComponentsFactory.createMaskInput("(##) # ####-####", "");
+    private JTextField passwordTextField = ComponentsFactory.createInput("");
+
+    public String getName() {
+        return this.nameTextField.getText();
+    }
+
+    public String getEmail() {
+        return this.emailTextField.getText();
+    }
+
+    public String getPhone() {
+        return this.phoneTextField.getText();
+    }
+
+    public String getPassword() {
+        return this.passwordTextField.getText();
+    }
+
+    public void initialize(Model model) {
+        this.model = model;
+        this.controller = new RegisterController();
+        this.controller.initialize(model, this);
+
+        this.model.attachObserver(this);    
+
+        this.display();
+    }
+
+    public void display() {
         this.setBackground(getBackground());
         this.setLayout(new GridBagLayout());
     
-        JRadioButton adminRadioButton = Components.createRadioButton("Sou organizador");
-        JRadioButton participantRadioButton = Components.createRadioButton("Sou participante");
+        JRadioButton adminRadioButton = ComponentsFactory.createRadioButton("Sou organizador");
+        JRadioButton participantRadioButton = ComponentsFactory.createRadioButton("Sou participante");
 
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(adminRadioButton);
@@ -32,31 +66,32 @@ public class RegisterView extends JPanel {
         radioButtons.add(adminRadioButton);
         radioButtons.add(participantRadioButton);
 
-        JButton registerButton = Components.createButton("Fazer registro");
-        registerButton.addActionListener(e -> mainView.changeScreen("login"));
+        JButton registerButton = ComponentsFactory.createButton("Fazer registro");
+        registerButton.addActionListener(e -> this.controller.registerUser());
+        JButton loginButton = ComponentsFactory.createLightButton("Já possuo conta");
+        loginButton.addActionListener(e -> this.controller.loginUser());
 
-        JButton loginButton = Components.createLightButton("Já possuo conta");
-        loginButton.addActionListener(e -> mainView.changeScreen("login"));
-        
-        ArrayList<JComponent> components = new ArrayList<JComponent>();
-
-        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
-        components.add(Components.createTitle("Realize seu cadastro!"));
-        components.add(Components.createGrayText("Nome completo:")); 
-        components.add(Components.createInput("")); 
-        components.add(Components.createGrayText("Email:")); 
-        components.add(Components.createInput(""));
-        components.add(Components.createGrayText("Telefone:")); 
-        components.add(Components.createMaskInput("(##) # ####-####", ""));
-        components.add(Components.createGrayText("Senha:")); 
-        components.add(Components.createPasswordInput(""));
-        components.add(radioButtons);
-        components.add(registerButton); 
-        components.add(loginButton);
+        JPanel container = ComponentsFactory.createContainer(
+            new JLabel(Constraints.LOGO_IMAGE_ICON),
+            ComponentsFactory.createTitle("Realize seu cadastro!"),
+            ComponentsFactory.createGrayText("Nome completo:"),
+            nameTextField,
+            ComponentsFactory.createGrayText("Email:"),
+            emailTextField,
+            ComponentsFactory.createGrayText("Telefone:"),
+            phoneTextField,
+            ComponentsFactory.createGrayText("Senha:"),
+            passwordTextField,
+            radioButtons,
+            registerButton,
+            loginButton
+        );
         
         this.add(
-            Components.createScrollBar(Components.createContainer(components)), 
-            Components.createScrollBarConstraints()
+            ComponentsFactory.createScrollBar(container), 
+            ComponentsFactory.createScrollBarConstraints()
         );
     }
+
+    public void update() {}
 }

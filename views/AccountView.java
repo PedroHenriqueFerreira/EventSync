@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import utils.Components;
+import utils.ComponentsFactory;
 import utils.Constraints;
 
 public class AccountView extends JPanel {
@@ -16,30 +16,30 @@ public class AccountView extends JPanel {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
 
-        JButton updateButton = Components.createButton("Atualizar");
+        JButton updateButton = ComponentsFactory.createButton("Atualizar");
         updateButton.addActionListener(e -> mainView.changeScreen("update_account"));
 
-        JButton backButton = Components.createLightButton("Voltar");
+        JButton backButton = ComponentsFactory.createLightButton("Voltar");
         backButton.addActionListener(e -> mainView.changeScreen("home"));
 
-        ArrayList<JComponent> components = new ArrayList<JComponent>();
-
-        components.add(new JLabel(Constraints.LOGO_IMAGE_ICON));
-        components.add(Components.createTitle("Minha conta"));
-        components.add(Components.createGrayText("Nome Completo:"));
-        components.add(Components.createLightText("Pedro Henrique Ferreira da Silva"));
-        components.add(Components.createGrayText("Email:"));
-        components.add(Components.createLightText("HPedro09062004@gmail.com"));
-        components.add(Components.createGrayText("Senha:"));
-        components.add(Components.createLightText("********"));
-        components.add(Components.createGrayText("Cargo:"));
-        components.add(Components.createLightText("Sou participante"));
-        components.add(updateButton);
-        components.add(backButton);        
+        JPanel container = ComponentsFactory.createContainer(
+            new JLabel(Constraints.LOGO_IMAGE_ICON),
+            ComponentsFactory.createTitle("Minha conta"),
+            ComponentsFactory.createGrayText("Nome Completo:"),
+            ComponentsFactory.createLightText("Pedro Henrique Ferreira da Silva"),
+            ComponentsFactory.createGrayText("Email:"),
+            ComponentsFactory.createLightText("HPedro09062004@gmail.com"),
+            ComponentsFactory.createGrayText("Senha:"),
+            ComponentsFactory.createLightText("********"),
+            ComponentsFactory.createGrayText("Cargo:"),
+            ComponentsFactory.createLightText("Sou participante"),
+            updateButton,
+            backButton
+        );
 
         this.add(
-            Components.createScrollBar(Components.createContainer(components)), 
-            Components.createScrollBarConstraints()
+            ComponentsFactory.createScrollBar(container), 
+            ComponentsFactory.createScrollBarConstraints()
         );
     }
 }

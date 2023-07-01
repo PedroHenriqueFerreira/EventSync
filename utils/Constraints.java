@@ -65,8 +65,12 @@ public class Constraints {
     );
 
     public static final Insets CONTAINER_INSETS = new Insets(40, 0, 40, 0);
+    public static final Insets CARD_INSETS = new Insets(14, 7, 14, 7);
+    
     public static final Insets TEXT_INSETS = new Insets(5, 0, 5, 0);
     public static final Insets INPUT_INSETS = new Insets(10, 0, 10, 0);
     public static final Insets BUTTON_INSETS = new Insets(10, 0, 10, 0);
     public static final Insets IMAGE_INSETS = new Insets(20, 0, 40, 0);
+
+    public static final Dimension POPUP_DIMENSION = new Dimension(460, 300);
 }

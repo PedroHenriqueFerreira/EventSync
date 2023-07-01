@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -27,7 +29,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
-public class Components {
+public class ComponentsFactory {
     private static void createButtonStyle(JButton button) {
         button.setFont(Constraints.DEFAULT_FONT);
         button.setBorder(Constraints.DEFAULT_LINE_BORDER);
@@ -35,7 +37,7 @@ public class Components {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setFocusPainted(false);
     }
-
+    
     public static JButton createButton(String value) {
         JButton button = new JButton(value);
 
@@ -104,7 +106,7 @@ public class Components {
         input.setPreferredSize(Constraints.DEFAULT_DIMENSION);
         input.setBackground(Constraints.BG_COLOR);
         input.setForeground(Constraints.LIGHT_COLOR);
-        input.setCaretColor(Constraints.LIGHT_COLOR);
+        input.setCaretColor(Constraints.LIGHT_COLOR);   
 
         input.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
@@ -117,6 +119,26 @@ public class Components {
                 input.setBorder(Constraints.DEFAULT_PADDING_BORDER);
             }
         });
+    }
+
+    public static JTextField createSearchInput(String value) {
+        JTextField input = createInput(value);
+        
+        input.setBackground(Constraints.CONTAINER_COLOR);
+
+        input.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                input.setBackground(Constraints.CONTAINER_COLOR);
+                input.setBorder(Constraints.DEFAULT_LINE_BORDER);
+            }
+            
+            public void focusLost(FocusEvent e) {
+                input.setBackground(Constraints.CONTAINER_COLOR);
+                input.setBorder(Constraints.DEFAULT_PADDING_BORDER);
+            }
+        });
+
+        return input;
     }
 
     public static JTextField createInput(String value) {
@@ -311,7 +333,18 @@ public class Components {
         return gridBagConstraints;
     }
 
-    public static JPanel createContainer(ArrayList<JComponent> components) {        
+    public static JPanel createLargeContainer(JComponent... components) {
+        for (JComponent component : components) {
+            component.setPreferredSize(new Dimension(
+                Constraints.LARGE_COMPONENT_WIDTH, 
+                component.getPreferredSize().height
+            ));
+        }
+
+        return createContainer(components);
+    }
+
+    public static JPanel createContainer(JComponent... components) {        
         JPanel container = new JPanel(new GridBagLayout());
         container.setBorder(Constraints.LARGE_PADDING_BORDER);
         container.setBackground(Constraints.CONTAINER_COLOR);
@@ -321,8 +354,8 @@ public class Components {
         gridBagConstraints.anchor = GridBagConstraints.NORTH;
         gridBagConstraints.gridx = 0;
 
-        for (int i = 0; i < components.size(); i++) {
-            JComponent component = components.get(i);
+        for (int i = 0; i < components.length; i++) {
+            JComponent component = components[i];
 
             if (component instanceof JLabel) {
                 JLabel label = (JLabel) component;
@@ -343,5 +376,31 @@ public class Components {
         }
 
         return container;
+    }
+
+    public static void createPopup(ArrayList<String> messages) {
+        JFrame popup = new JFrame();
+        popup.setSize(Constraints.POPUP_DIMENSION.width, Constraints.POPUP_DIMENSION.height);
+
+        System.out.println(Constraints.POPUP_DIMENSION.width);
+        
+        JComponent[] components = new JComponent[messages.size() + 1]; 
+
+        for (int i = 0; i < messages.size(); i++) {
+            components[i] = createLightText(messages.get(i));
+        }
+
+        JButton button = createButton("OK");
+        button.addActionListener(e -> popup.dispose());
+
+        components[messages.size()] = button;
+        
+        JPanel panel = createContainer(components);
+        panel.setPreferredSize(Constraints.POPUP_DIMENSION);
+
+        popup.add(panel);
+        
+        popup.setLocationRelativeTo(null);
+        popup.setVisible(true);
     }
 }
