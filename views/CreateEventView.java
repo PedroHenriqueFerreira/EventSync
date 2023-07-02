@@ -30,7 +30,7 @@ public class CreateEventView extends JPanel implements Observer {
     private JTextField cityTextField = ComponentsFactory.createInput("");
     private JTextField streetTextField = ComponentsFactory.createInput("");
     private JTextField addressNumberTextField = ComponentsFactory.createInput("");
-    private JTextField priceTextField = ComponentsFactory.createInput("");
+    private JTextField priceTextField = ComponentsFactory.createCurrencyInput("");
 
     public String getName() {
         return this.nameTextField.getText();
@@ -66,6 +66,18 @@ public class CreateEventView extends JPanel implements Observer {
 
     public String getPrice() {
         return this.priceTextField.getText();
+    }
+
+    public void clearFields() {
+        this.nameTextField.setText("");
+        this.descriptionTextField.setText("");
+        this.timeTextField.setText("");
+        this.dateTextField.setText("");
+        this.stateTextField.setText("");
+        this.cityTextField.setText("");
+        this.streetTextField.setText("");
+        this.addressNumberTextField.setText("");
+        this.priceTextField.setText("");
     }
 
     public CreateEventView(Model model, MainView mainView) {

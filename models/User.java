@@ -60,4 +60,8 @@ public abstract class User {
 		if (myEvents == null) return;
 		this.myEvents = myEvents;
 	}
+
+	abstract public void addEvent(Event event);
+
+    abstract public void removeEvent(Event event);
 }

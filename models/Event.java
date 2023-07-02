@@ -2,6 +2,8 @@ package models;
 
 import java.util.*;
 
+import utils.CodeGenerator;
+
 public class Event {
     private String code;
     private Admin admin;
@@ -14,6 +16,25 @@ public class Event {
 
     private ArrayList<Participant> participants = new ArrayList<Participant>();
     private ArrayList<Activity> atividades = new ArrayList<Activity>();
+
+    public Event(
+        Admin admin,
+        String name,
+        String description,
+        Date date,
+        Time time,
+        Address address,
+        float price
+    ) {
+        this.setCode(CodeGenerator.generate());
+        this.setAdmin(admin);
+        this.setName(name);
+        this.setDescription(description);
+        this.setDate(date);
+        this.setTime(time);
+        this.setAddress(address);
+        this.setPrice(price);
+    }
 
     public String getCode() {
         return code;

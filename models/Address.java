@@ -52,4 +52,8 @@ public class Address {
         this.setStreet(rua);
         this.setNumber(numero);        
     };
+
+    public String toString(){
+        return String.format("%s, N° %d, %s - %s", this.street, this.number, this.city, this.state);
+    }
 }

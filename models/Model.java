@@ -42,6 +42,9 @@ public class Model {
         if (event == null) return;
 
         this.events.put(event.getCode(), event);
+        this.loggedUser.addEvent(event);
+        
+        this.notifyObservers();
     }
 
     public void removeEvent(String code) {
@@ -54,6 +57,10 @@ public class Model {
         if (code == null) return null;
 
         return this.events.get(code);
+    }
+
+    public ArrayList<Event> getEvents() {
+        return new ArrayList<Event>(this.events.values());
     }
 
     private HashMap<String, Payment> payments = new HashMap<String, Payment>();

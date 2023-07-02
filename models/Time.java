@@ -30,6 +30,6 @@ public class Time {
     }
 
     public String toString(){
-        return String.format("%02d:%02d", this.hour, this.minute);
+        return String.format("%02d:%02dh", this.hour, this.minute);
     }
 }
