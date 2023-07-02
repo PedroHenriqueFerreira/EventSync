@@ -18,7 +18,6 @@ public class Constraints {
     public static final Color CONTAINER_COLOR = new Color(42, 42, 52);
     public static final Color GRAY_COLOR = new Color(169, 163, 181);
     public static final Color LIGHT_COLOR = new Color(255, 255, 255);
-    public static final Color DANGER_COLOR = new Color(255, 54, 78);
 
     public static final Font DEFAULT_FONT = CustomFont.load("fonts/Poppins-Regular.ttf", 18);
     public static final Font LARGE_FONT = CustomFont.load("fonts/Poppins-SemiBold.ttf", 27);
@@ -33,11 +32,7 @@ public class Constraints {
         DEFAULT_PADDING_BORDER
     );
 
-    public static final Border DANGER_LINE_BORDER = BorderFactory.createCompoundBorder(
-        new LineBorder(DANGER_COLOR, 2),
-        DEFAULT_PADDING_BORDER
-    );
-
+    
     public static final int SCROLL_WIDTH = 8;
     public static final int SCROLL_SPEED = 20;
 
@@ -64,8 +59,10 @@ public class Constraints {
         DEFAULT_COMPONENT_HEIGHT
     );
 
+    public static final Insets DEFAULT_INSETS = new Insets(0, 0, 0, 0);
+
     public static final Insets CONTAINER_INSETS = new Insets(40, 0, 40, 0);
-    public static final Insets CARD_INSETS = new Insets(7, 7, 7, 7);
+    public static final Insets CARD_INSETS = new Insets(14, 14, 14, 14);
     
     public static final Insets TEXT_INSETS = new Insets(5, 0, 5, 0);
     public static final Insets INPUT_INSETS = new Insets(10, 0, 10, 0);

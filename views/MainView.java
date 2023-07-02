@@ -31,11 +31,14 @@ public class MainView extends JFrame {
         this.add(new AccountView(this.model, this), "account");
         this.add(new UpdateAccountView(this.model, this), "update_account");
         this.add(new CreateEventView(this.model, this), "create_event");
+        this.add(new EventView(this.model, this), "event");
+        this.add(new UpdateEventView(this.model, this), "update_event");
+        this.add(new ActivityView(this.model, this), "activity");
+        this.add(new CreateActivityView(this.model, this), "create_activity");
+        this.add(new UpdateActivityView(this.model, this), "update_activity");
     }
     
     public void createViews() {
-        // this.add(new UpdateEventView(this), "update_event");
-        // this.add(new EventView(this), "event");
     }
 
     public void changeView(String screen) {

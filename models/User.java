@@ -64,4 +64,8 @@ public abstract class User {
 	abstract public void addEvent(Event event);
 
     abstract public void removeEvent(Event event);
+
+	public String toString() {
+		return String.format("%s - %s", this.name, this.email);
+	}
 }

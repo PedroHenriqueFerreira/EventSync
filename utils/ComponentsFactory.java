@@ -5,13 +5,16 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Timer;
 
 import javax.swing.ImageIcon;
@@ -158,11 +161,29 @@ public class ComponentsFactory {
         return input;
     }
 
+    public static JFormattedTextField createNumberInput(String value) {
+        NumberFormat numberFormatter = NumberFormat.getInstance();
+
+        NumberFormatter formatter = new NumberFormatter(numberFormatter);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(0);
+        formatter.setAllowsInvalid(false);
+        formatter.setCommitsOnValidEdit(true);
+
+        JFormattedTextField input = new JFormattedTextField(formatter);
+        input.setText(value);
+
+        createInputStyle(input);
+
+        return input;
+    }
+
     public static JFormattedTextField createCurrencyInput(String value) {
         DecimalFormat decimalFormatter = new DecimalFormat("#,##0.00");
 
         NumberFormatter formatter = new NumberFormatter(decimalFormatter);
         formatter.setValueClass(Double.class);
+        formatter.setMinimum(0.0);
         formatter.setAllowsInvalid(false);
         formatter.setCommitsOnValidEdit(true);
 

@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Event;
 import models.Model;
 import utils.Observer;
 import views.HomeView;
@@ -30,7 +31,9 @@ public class HomeController implements Observer {
         this.mainView.changeView("create_event");
     }
 
-    public void viewEvent() {
+    public void viewEvent(Event event) {
+        this.model.setSelectedEvent(event);
+        this.mainView.changeView("event");
     }
 
     public void update() {}

@@ -38,7 +38,7 @@ public class AccountView extends JPanel implements Observer {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
 
-        JButton updateButton = ComponentsFactory.createButton("Atualizar");
+        JButton updateButton = ComponentsFactory.createButton("Atualizar conta");
         updateButton.addActionListener(e -> this.controller.viewUpdateAccount());
 
         JButton backButton = ComponentsFactory.createLightButton("Voltar");

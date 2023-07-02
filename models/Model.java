@@ -2,6 +2,9 @@ package models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import utils.Observer;
 
@@ -11,6 +14,7 @@ public class Model {
     public void addUser(User user) {
         if (user == null || user.getEmail() == null) return;
 
+        this.notifyObservers();
         this.users.put(user.getEmail(), user);
     }
 
@@ -59,6 +63,14 @@ public class Model {
         return this.events.get(code);
     }
 
+    public Map<String, List<Event>> getEventsByCategory() {
+        Map<String, List<Event>> eventsByCategory = this.getEvents().stream().collect(
+            Collectors.groupingBy(Event::getCategory)
+        );
+
+        return eventsByCategory;
+    }
+
     public ArrayList<Event> getEvents() {
         return new ArrayList<Event>(this.events.values());
     }
@@ -77,8 +89,6 @@ public class Model {
         this.payments.remove(code);
     }
 
-    private ArrayList<Observer> observers = new ArrayList<Observer>();
-
     private User loggedUser;
 
     public User getLoggedUser() {
@@ -90,7 +100,29 @@ public class Model {
         this.notifyObservers();
     }
 
-    public Model() {
+    private Event selectedEvent;
+
+    public Event getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    public void setSelectedEvent(Event event) {
+        this.selectedEvent = event;
+        this.notifyObservers();
+    }
+    
+    private Activity selectedActivity;
+
+    public Activity getSelectedActivity() {
+        return selectedActivity;
+    }
+
+    public void setSelectedActivity(Activity activity) {
+        this.selectedActivity = activity;
+        this.notifyObservers();
+    }
+
+    public void loadData() {
         Participant participant = new Participant(
             "Participante",
             "participante@gmail.com",
@@ -98,7 +130,15 @@ public class Model {
             "12345678"
         );
 
+        Participant participant2 = new Participant(
+            "Participante 2",
+            "participante2@gmail.com",
+            "(88) 99342-3244",
+            "12345678"
+        );
+
         this.addUser(participant);
+        this.addUser(participant2);
 
         Admin admin = new Admin(
             "Admin",
@@ -108,7 +148,38 @@ public class Model {
         );
 
         this.addUser(admin);
+
+        this.setLoggedUser(admin);
+
+        for (int i = 1; i <= 5; i++) {
+            for (int j = 0; j < 2; j++) {
+                Event event = new Event(
+                    admin,
+                    "Evento " + i,
+                    "Descrição do evento " + i,
+                    "Categoria " + i,
+                    new Date(1, 1, 2023),
+                    new Time(12, 30),
+                    new Address("CE", "Russas", "Felipe Santiago", 10),
+                    10.0f
+                );
+
+                Activity activity = new Activity(
+                    "Atividade " + j, 
+                    "Descrição da atividade " + j,
+                    new Instructor("Joao", "Joao@gmail.com", "(88) 99342-3244"),
+                    new Date(1, 1, 2023),
+                    new Time(12, 30)
+                );
+
+                event.addActivity(activity);
+    
+                this.addEvent(event);
+            }
+        }
     }
+    
+    private ArrayList<Observer> observers = new ArrayList<Observer>();
 
     public void notifyObservers() {
         for (Observer observer : observers) {

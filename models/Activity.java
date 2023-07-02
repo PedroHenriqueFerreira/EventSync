@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Activity {
     private String name;
     private String description;
-    private Event event;
     private Instructor instructor;
     private Date date;
     private Time time;
@@ -31,16 +30,6 @@ public class Activity {
         this.description = description;
     }
 
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        if (event == null) return;
-
-        this.event = event;
-    }
-
     public Instructor getInstructor() {
         return instructor;
     }
@@ -58,7 +47,6 @@ public class Activity {
     public void setTime(Time time) {
         if (time == null) return;
 
-        // TODO: Validate time if starts after event starts and ends before event ends
         this.time = time;
     }
 
@@ -69,7 +57,6 @@ public class Activity {
     public void setDate(Date date) {
         if (date == null) return;
 
-        // TODO: Validate date if starts after event starts and ends before event ends
         this.date = date;
     }
 
@@ -86,17 +73,18 @@ public class Activity {
     public Activity(
         String name, 
         String description, 
-        Event event, 
         Instructor instructor, 
         Date date, 
         Time time
     ) {
         this.setName(name);
         this.setDescription(description);
-        this.setEvent(event);
         this.setInstructor(instructor);
         this.setDate(date);
         this.setTime(time);
     };
 
+    public String toString() {
+        return String.format("%s - %s às %s", this.name, this.date.toString(), this.time.toString());
+    }
 }

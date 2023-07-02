@@ -9,18 +9,22 @@ public class Event {
     private Admin admin;
     private String name;
     private String description;
+    private String category;
     private Date date;
     private Time time;
     private Address address;
     private float price;
 
     private ArrayList<Participant> participants = new ArrayList<Participant>();
-    private ArrayList<Activity> atividades = new ArrayList<Activity>();
+    private ArrayList<Activity> activities = new ArrayList<Activity>();
+
+    public Event() {}
 
     public Event(
         Admin admin,
         String name,
         String description,
+        String category,
         Date date,
         Time time,
         Address address,
@@ -30,6 +34,7 @@ public class Event {
         this.setAdmin(admin);
         this.setName(name);
         this.setDescription(description);
+        this.setCategory(category);
         this.setDate(date);
         this.setTime(time);
         this.setAddress(address);
@@ -74,6 +79,16 @@ public class Event {
         if (description == null) return;
 
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        if (category == null) return;
+
+        this.category = category;
     }
 
     public Date getDate() {
@@ -126,14 +141,14 @@ public class Event {
         this.participants = participants;
     }
 
-    public ArrayList<Activity> getAtividades() {
-        return atividades;
+    public ArrayList<Activity> getActivities() {
+        return activities;
     }
 
-    public void setAtividades(ArrayList<Activity> atividades) {
-        if (atividades == null) return;
+    public void setActivities(ArrayList<Activity> activities) {
+        if (activities == null) return;
 
-        this.atividades = atividades;
+        this.activities = activities;
     }
 
     public void addParticipant(Participant participant) {
@@ -146,5 +161,17 @@ public class Event {
         if (participant == null) return;
 
         this.participants.remove(participant);
+    }
+
+    public void addActivity(Activity activity) {
+        if (activity == null) return;
+
+        this.activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        if (activity == null) return;
+
+        this.activities.remove(activity);
     }
 }

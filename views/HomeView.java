@@ -3,26 +3,44 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 import controllers.HomeController;
+import models.Address;
+import models.Admin;
 import models.Event;
 import models.Model;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
+import utils.Transform;
 
 public class HomeView extends JPanel implements Observer {
     private Model model;
     private HomeController controller;
 
-    private JPanel myEventsPanel = new JPanel(new GridBagLayout());
+    private JPanel myEventsPanel = new JPanel(
+        new GridLayout(
+            0, 4, 
+            Constraints.CARD_INSETS.left, 
+            Constraints.CARD_INSETS.top
+        )
+    );
+    
+    private JPanel allEventsPanel = new JPanel(new GridBagLayout());
+    private JButton createEventButton = ComponentsFactory.createLightButton("Criar evento");
+
+    private JLabel myEventsLabel =  ComponentsFactory.createTitle("Meus eventos");
 
     public HomeView(Model model, MainView mainView) {
         this.model = model;
@@ -36,15 +54,6 @@ public class HomeView extends JPanel implements Observer {
     private JPanel createHeader() {
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(getBackground());
-
-        JPanel searchPanel = new JPanel();
-        searchPanel.setBackground(getBackground());
-
-        JButton searchButton = ComponentsFactory.createButton("Pesquisar");
-        searchButton.setPreferredSize(Constraints.SMALL_DIMENSION);
-
-        searchPanel.add(ComponentsFactory.createSearchInput(""));
-        searchPanel.add(searchButton);
 
         JPanel optionsPanel = new JPanel();
         optionsPanel.setBackground(getBackground());
@@ -61,7 +70,6 @@ public class HomeView extends JPanel implements Observer {
         optionsPanel.add(logoutButton);
 
         header.add(new JLabel(Constraints.LOGO_IMAGE_ICON), BorderLayout.WEST);
-        header.add(searchPanel, BorderLayout.CENTER);
         header.add(optionsPanel, BorderLayout.EAST);
 
         return header;
@@ -70,16 +78,31 @@ public class HomeView extends JPanel implements Observer {
     private JPanel createMyEventsTitlePanel() {
         JPanel myEventsTitlePanel = new JPanel(new BorderLayout());
         myEventsTitlePanel.setBackground(getBackground());
-        
-        myEventsTitlePanel.add(ComponentsFactory.createTitle("Meus eventos"), BorderLayout.WEST);
 
-        JButton createEventButton = ComponentsFactory.createLightButton("Criar evento");
-        createEventButton.setPreferredSize(Constraints.SMALL_DIMENSION);
-        createEventButton.addActionListener(e -> this.controller.viewCreateEvent());
+        this.createEventButton.setPreferredSize(Constraints.SMALL_DIMENSION);
+        this.createEventButton.addActionListener(e -> this.controller.viewCreateEvent());
 
         myEventsTitlePanel.add(createEventButton, BorderLayout.EAST);
+        myEventsTitlePanel.add(this.myEventsLabel, BorderLayout.WEST);
 
         return myEventsTitlePanel;
+    }
+
+    private JPanel createContainer(Event event) {
+        JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
+        expandButton.addActionListener(e -> this.controller.viewEvent(event));
+
+        JPanel container = ComponentsFactory.createContainer(
+            ComponentsFactory.createTitle(event.getName()),
+            ComponentsFactory.createLightText(event.getDescription()),
+            ComponentsFactory.createGrayText(event.getAddress().toString()),
+            ComponentsFactory.createGrayText(
+                event.getDate().toString() + " às " + event.getTime().toString()
+            ),
+            expandButton
+        );
+
+        return container;
     }
     
     private void display() {
@@ -102,50 +125,93 @@ public class HomeView extends JPanel implements Observer {
         
         this.add(ComponentsFactory.createScrollBar(mainPanel), scrollBarConstraints);
         
+        gridBagConstraints.insets = Constraints.CARD_INSETS;
         mainPanel.add(createMyEventsTitlePanel(), gridBagConstraints);
+        gridBagConstraints.insets = Constraints.DEFAULT_INSETS;
 
-        gridBagConstraints.gridy = 1;
         this.myEventsPanel.setBackground(getBackground());
+        gridBagConstraints.gridy = 1;
         mainPanel.add(myEventsPanel, gridBagConstraints);
-        
-        gridBagConstraints.gridy = 2;
-        mainPanel.add(ComponentsFactory.createTitle("Todos os eventos"), gridBagConstraints);
 
-        // JPanel allEventsPanel = new JPanel(new GridBagLayout());
-        // allEventsPanel.setBackground(getBackground());
-        // gridBagConstraints.gridy = 3;
-        // mainPanel.add(allEventsPanel, gridBagConstraints);
+        this.allEventsPanel.setBackground(getBackground());
+        gridBagConstraints.gridy = 2;
+        mainPanel.add(allEventsPanel, gridBagConstraints);
+
+        this.update();
     }
 
-    public void update() {
-        System.out.println("------------------");
+    private void updateMyEvents() {
+        this.myEventsPanel.removeAll();
+        
+        User user = this.model.getLoggedUser();
 
-        ArrayList<Event> events = this.model.getEvents();
+        if (user == null) return;
 
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
+        ArrayList<Event> userEvents = user.getMyEvents();
 
-            GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        if (userEvents == null || userEvents.size() == 0) {
+            this.myEventsLabel.setVisible(false);
 
-            gridBagConstraints.insets = Constraints.CARD_INSETS;
+            return;
+        }
 
-            JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
-            expandButton.addActionListener(e -> this.controller.viewEvent());
+        this.myEventsLabel.setVisible(true);
 
-            JPanel container = ComponentsFactory.createContainer(
-                ComponentsFactory.createTitle(event.getName()),
-                ComponentsFactory.createLightText(event.getDescription()),
-                ComponentsFactory.createGrayText(event.getAddress().toString()),
-                ComponentsFactory.createGrayText(
-                    event.getDate().toString() + " às " + event.getTime().toString()
-                ),
-                expandButton
+        for (Event userEvent: userEvents) {
+            this.myEventsPanel.add(this.createContainer(userEvent));
+        }
+    }
+
+    private void updateAllEvents() {
+        this.allEventsPanel.removeAll();
+
+        GridBagConstraints allEventsConstraints = new GridBagConstraints();
+        allEventsConstraints.fill = GridBagConstraints.HORIZONTAL;
+        allEventsConstraints.weightx = 1.0;
+
+        Map<String, List<Event>> eventsByCategory = this.model.getEventsByCategory();
+
+        int gridy = 0;
+
+        for (String category : eventsByCategory.keySet()) {
+            allEventsConstraints.gridy = gridy;
+
+            allEventsConstraints.insets = Constraints.CARD_INSETS;
+            this.allEventsPanel.add(ComponentsFactory.createTitle(category), allEventsConstraints);
+            allEventsConstraints.insets = Constraints.DEFAULT_INSETS;
+
+            gridy++;
+
+            List<Event> eventsInCategory = eventsByCategory.get(category);
+
+            GridLayout gridLayout = new GridLayout(
+                0, 4, 
+                Constraints.CARD_INSETS.left, 
+                Constraints.CARD_INSETS.top
             );
 
-            gridBagConstraints.gridx = i % 4;
-            gridBagConstraints.gridy = i / 4;
+            JPanel categoryPanel = new JPanel(gridLayout);
+            categoryPanel.setBackground(getBackground());
 
-            this.myEventsPanel.add(container, gridBagConstraints);
+            allEventsConstraints.gridy = gridy;
+            this.allEventsPanel.add(categoryPanel, allEventsConstraints);
+
+            gridy++;
+
+            for (Event eventInCategory: eventsInCategory) {
+                categoryPanel.add(this.createContainer(eventInCategory));
+            }
         }
+    }
+
+    public void update() {        
+        if (this.model.getLoggedUser() instanceof Admin) {
+            this.createEventButton.setVisible(true);
+        } else {
+            this.createEventButton.setVisible(false);
+        }
+
+        this.updateMyEvents();
+        this.updateAllEvents();
     }
 }

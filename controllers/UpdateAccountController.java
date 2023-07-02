@@ -24,7 +24,7 @@ public class UpdateAccountController implements Observer {
         this.view = view;
     }
 
-    public void edit() {
+    public void updateAccount() {
         ArrayList<String> errors = new ArrayList<String>();
 
         String name = this.view.getName();
@@ -72,7 +72,6 @@ public class UpdateAccountController implements Observer {
 
         this.model.addUser(user);
 
-        this.model.notifyObservers();
         this.mainView.changeView("account");
     }
 

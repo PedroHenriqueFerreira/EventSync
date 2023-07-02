@@ -24,13 +24,14 @@ public class CreateEventView extends JPanel implements Observer {
 
     private JTextField nameTextField = ComponentsFactory.createInput("");
     private JTextField descriptionTextField = ComponentsFactory.createInput("");
+    private JTextField categoryTextField = ComponentsFactory.createInput("");
     private JTextField timeTextField = ComponentsFactory.createMaskInput("##:##h", "");
     private JTextField dateTextField = ComponentsFactory.createMaskInput("##/##/####", "");
     private JTextField stateTextField = ComponentsFactory.createInput("");
     private JTextField cityTextField = ComponentsFactory.createInput("");
     private JTextField streetTextField = ComponentsFactory.createInput("");
-    private JTextField addressNumberTextField = ComponentsFactory.createInput("");
-    private JTextField priceTextField = ComponentsFactory.createCurrencyInput("");
+    private JTextField addressNumberTextField = ComponentsFactory.createNumberInput("0");
+    private JTextField priceTextField = ComponentsFactory.createCurrencyInput("0");
 
     public String getName() {
         return this.nameTextField.getText();
@@ -38,6 +39,10 @@ public class CreateEventView extends JPanel implements Observer {
 
     public String getDescription() {
         return this.descriptionTextField.getText();
+    }
+
+    public String getCategory() {
+        return this.categoryTextField.getText();
     }
 
     public String getTime() {
@@ -71,13 +76,14 @@ public class CreateEventView extends JPanel implements Observer {
     public void clearFields() {
         this.nameTextField.setText("");
         this.descriptionTextField.setText("");
+        this.categoryTextField.setText("");
         this.timeTextField.setText("");
         this.dateTextField.setText("");
         this.stateTextField.setText("");
         this.cityTextField.setText("");
         this.streetTextField.setText("");
-        this.addressNumberTextField.setText("");
-        this.priceTextField.setText("");
+        this.addressNumberTextField.setText("0");
+        this.priceTextField.setText("0");
     }
 
     public CreateEventView(Model model, MainView mainView) {
@@ -101,11 +107,13 @@ public class CreateEventView extends JPanel implements Observer {
 
         JPanel container = ComponentsFactory.createLargeContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
-            ComponentsFactory.createTitle("Vizualizar evento"),
+            ComponentsFactory.createTitle("Criar evento"),
             ComponentsFactory.createGrayText("Nome:"),
             nameTextField,
             ComponentsFactory.createGrayText("Descrição:"),
             descriptionTextField,
+            ComponentsFactory.createGrayText("Categoria:"),
+            categoryTextField,
             ComponentsFactory.createGrayText("Hora:"),
             timeTextField,
             ComponentsFactory.createGrayText("Data:"),
@@ -120,6 +128,7 @@ public class CreateEventView extends JPanel implements Observer {
             addressNumberTextField,
             ComponentsFactory.createGrayText("Preço:"),
             priceTextField,
+            ComponentsFactory.createLightText(" "),
             createButton,
             homeButton
         );

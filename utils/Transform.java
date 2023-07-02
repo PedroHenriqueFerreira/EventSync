@@ -40,4 +40,14 @@ public class Transform {
             return 0;
         }
     }
+
+    public static int toInt(String number) {
+        try {
+            if (number == null) return 0;
+    
+            return Integer.parseInt(number.replace(",", ""));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

@@ -4,32 +4,29 @@ import java.util.ArrayList;
 
 import models.Address;
 import models.Admin;
-import models.Date;
 import models.Event;
 import models.Model;
 import models.Participant;
-import models.Time;
-import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
 import utils.Transform;
 import utils.Validator;
-import views.CreateEventView;
 import views.MainView;
+import views.UpdateEventView;
 
-public class CreateEventController implements Observer {
+public class UpdateEventController implements Observer {
     private Model model;
     private MainView mainView;
-    private CreateEventView view;
+    private UpdateEventView view;
 
-    public CreateEventController(Model model, MainView mainView, CreateEventView view) {
+    public UpdateEventController(Model model, MainView mainView, UpdateEventView view) {
         this.model = model;
 
         this.mainView = mainView;
         this.view = view;
     }
     
-    public void createEvent() {
+    public void updateEvent() {
         ArrayList<String> errors = new ArrayList<String>();
 
         String name = this.view.getName();
@@ -44,7 +41,7 @@ public class CreateEventController implements Observer {
         String price = this.view.getPrice();
 
         if (this.model.getLoggedUser() instanceof Participant) {
-            errors.add("• Você não tem permissão para criar eventos");
+            errors.add("• Você não tem permissão para atualizar eventos");
         }
 
         if (!Validator.sizeValidator(name, 3, 32)) {
@@ -91,34 +88,29 @@ public class CreateEventController implements Observer {
             ComponentsFactory.createPopup(errors);
             return;
         }
-        
-        Address address = new Address(
-            state,
-            city,
-            street,
-            Transform.toInt(addressNumber)
-        );
 
-        Event event = new Event(
-            (Admin) this.model.getLoggedUser(),
-            name,
-            description,
-            category,
-            Transform.toDate(date),
-            Transform.toTime(time),
-            address,
-            Transform.toFloat(price)
-        );
+        Event event = this.model.getSelectedEvent();
 
-        this.model.addEvent(event);
+        event.setName(name);
+        event.setDescription(description);
+        event.setCategory(category);
+        event.setTime(Transform.toTime(time));
+        event.setDate(Transform.toDate(date));
+        event.getAddress().setState(state);
+        event.getAddress().setCity(city);
+        event.getAddress().setStreet(street);
+        event.getAddress().setNumber(Transform.toInt(addressNumber));
+        event.setPrice(Transform.toFloat(price));
         
         this.view.clearFields();
-        this.mainView.changeView("home");
+
+        this.model.notifyObservers();
+        this.mainView.changeView("event");
     }
 
-    public void viewHome() {
+    public void viewEvent() {
         this.view.clearFields();
-        this.mainView.changeView("home");
+        this.mainView.changeView("event");
     }
 
     public void update() {}

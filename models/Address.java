@@ -46,11 +46,11 @@ public class Address {
         this.number = number;
     }
 
-    public Address(String state, String cidade, String rua, int numero){
+    public Address(String state, String city, String street, int number){
         this.setState(state);
-        this.setCity(cidade);
-        this.setStreet(rua);
-        this.setNumber(numero);        
+        this.setCity(city);
+        this.setStreet(street);
+        this.setNumber(number);        
     };
 
     public String toString(){

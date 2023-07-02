@@ -4,8 +4,6 @@ import utils.CodeGenerator;
 
 public class Payment {
     private String code;
-    private String status;
-    private String method;
     private Date date;
     private Time time;
     private Event event;
@@ -13,8 +11,6 @@ public class Payment {
     private float price;
 
     public Payment( 
-        String status, 
-        String method, 
         Date date, 
         Time time, 
         Event event, 
@@ -22,8 +18,6 @@ public class Payment {
     ) {
         this.setCode(CodeGenerator.generate());
         
-        this.setStatus(status);
-        this.setMethod(method);
         this.setDate(date);
         this.setTime(time);
         this.setEvent(event);
@@ -40,26 +34,6 @@ public class Payment {
         if (code == null) return;
         
         this.code = code;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        if (status == null) return;
-
-        this.status = status;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        if (method == null) return;
-
-        this.method = method;
     }
 
     public Date getDate() {
