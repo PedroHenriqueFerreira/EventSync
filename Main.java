@@ -8,9 +8,9 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Model model = new Model();
-                MainView mainView = new MainView();
+                MainView mainView = new MainView(model);
 
-                mainView.registerView.initialize(model);
+                mainView.changeView("home");
             }
         });
     }

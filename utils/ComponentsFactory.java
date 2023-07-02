@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -380,9 +381,7 @@ public class ComponentsFactory {
 
     public static void createPopup(ArrayList<String> messages) {
         JFrame popup = new JFrame();
-        popup.setSize(Constraints.POPUP_DIMENSION.width, Constraints.POPUP_DIMENSION.height);
-
-        System.out.println(Constraints.POPUP_DIMENSION.width);
+        popup.setResizable(false);
         
         JComponent[] components = new JComponent[messages.size() + 1]; 
 
@@ -396,7 +395,8 @@ public class ComponentsFactory {
         components[messages.size()] = button;
         
         JPanel panel = createContainer(components);
-        panel.setPreferredSize(Constraints.POPUP_DIMENSION);
+
+        popup.setSize(panel.getPreferredSize().width, panel.getPreferredSize().height);
 
         popup.add(panel);
         

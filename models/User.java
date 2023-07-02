@@ -3,11 +3,18 @@ package models;
 import java.util.ArrayList;
 
 public abstract class User {
-	private String name;
-	private String email;
-	private String phone;
-	private String password;
-	private ArrayList<Event> myEvents = new ArrayList<Event>();
+	protected String name;
+	protected String email;
+	protected String phone;
+	protected String password;
+	protected ArrayList<Event> myEvents = new ArrayList<Event>();
+
+	public User(String name, String email, String phone, String password) {
+		this.setName(name);
+		this.setEmail(email);
+		this.setPhone(phone);
+		this.setPassword(password);
+	}
 
 	public String getName() {
 		return name;
@@ -52,15 +59,5 @@ public abstract class User {
 	public void setMyEvents(ArrayList<Event> myEvents) {
 		if (myEvents == null) return;
 		this.myEvents = myEvents;
-	}
-
-	public void addEvent(Event event) {
-		if (event == null) return;
-		this.myEvents.add(event);
-	}
-
-	public void removeEvent(Event event) {
-		if (event == null) return;
-		this.myEvents.remove(event);
 	}
 }

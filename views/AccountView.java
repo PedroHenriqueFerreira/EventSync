@@ -1,38 +1,62 @@
 package views;
 
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controllers.AccountController;
+import models.Admin;
+import models.Model;
+import models.Participant;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Constraints;
+import utils.Observer;
 
-public class AccountView extends JPanel {
-    public AccountView(MainView mainView) {
+public class AccountView extends JPanel implements Observer {
+    private Model model;
+    private AccountController controller;
+
+    private JLabel nameLabel = ComponentsFactory.createLightText(" ");
+    private JLabel emailLabel = ComponentsFactory.createLightText(" ");
+    private JLabel phoneLabel = ComponentsFactory.createLightText(" ");
+    private JLabel passwordLabel = ComponentsFactory.createLightText(" ");
+    private JLabel roleLabel = ComponentsFactory.createLightText(" ");
+
+    public AccountView(Model model, MainView mainView) {
+        this.model = model;
+        this.controller = new AccountController(model, mainView, this);
+
+        this.model.attachObserver(this);    
+
+        this.display();
+    }
+
+    private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
 
         JButton updateButton = ComponentsFactory.createButton("Atualizar");
-        updateButton.addActionListener(e -> mainView.changeScreen("update_account"));
+        updateButton.addActionListener(e -> this.controller.viewUpdateAccount());
 
         JButton backButton = ComponentsFactory.createLightButton("Voltar");
-        backButton.addActionListener(e -> mainView.changeScreen("home"));
+        backButton.addActionListener(e -> this.controller.viewHome());
 
         JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
             ComponentsFactory.createTitle("Minha conta"),
             ComponentsFactory.createGrayText("Nome Completo:"),
-            ComponentsFactory.createLightText("Pedro Henrique Ferreira da Silva"),
+            this.nameLabel,
             ComponentsFactory.createGrayText("Email:"),
-            ComponentsFactory.createLightText("HPedro09062004@gmail.com"),
+            this.emailLabel,
+            ComponentsFactory.createGrayText("Telefone:"),
+            this.phoneLabel,
             ComponentsFactory.createGrayText("Senha:"),
-            ComponentsFactory.createLightText("********"),
+            this.passwordLabel,
             ComponentsFactory.createGrayText("Cargo:"),
-            ComponentsFactory.createLightText("Sou participante"),
+            this.roleLabel,
             updateButton,
             backButton
         );
@@ -41,5 +65,17 @@ public class AccountView extends JPanel {
             ComponentsFactory.createScrollBar(container), 
             ComponentsFactory.createScrollBarConstraints()
         );
+    }
+
+    public void update() {
+        if (this.model.getLoggedUser() == null) return;
+        
+        User user = this.model.getLoggedUser();
+        
+        this.nameLabel.setText(user.getName());
+        this.emailLabel.setText(user.getEmail());
+        this.passwordLabel.setText(user.getPassword());
+        this.phoneLabel.setText(user.getPhone());
+        this.roleLabel.setText(user instanceof Admin ? "Sou administrador" : "Sou participante");
     }
 }

@@ -5,28 +5,60 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import controllers.LoginController;
+import models.Model;
 import utils.ComponentsFactory;
 import utils.Constraints;
+import utils.Observer;
 
-public class LoginView extends JPanel {
-    public LoginView(MainView mainView) {
+public class LoginView extends JPanel implements Observer {
+    private Model model;
+    private LoginController controller;
+
+    private JTextField emailTextField = ComponentsFactory.createInput("");
+    private JTextField passwordTextField = ComponentsFactory.createPasswordInput("");
+
+    public String getEmail() {
+        return this.emailTextField.getText();
+    }
+
+    public String getPassword() {
+        return this.passwordTextField.getText();
+    }
+
+    public void clearFields() {
+        this.emailTextField.setText("");
+        this.passwordTextField.setText("");
+    }
+
+    public LoginView(Model model, MainView mainView) {
+        this.model = model;
+        this.controller = new LoginController(model, mainView, this);
+
+        this.model.attachObserver(this);    
+
+        this.display();
+    }
+
+    private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
         
         JButton loginButton = ComponentsFactory.createButton("Fazer login");
-        loginButton.addActionListener(e -> mainView.changeScreen("home"));
+        loginButton.addActionListener(e -> this.controller.login());
 
         JButton registerButton = ComponentsFactory.createLightButton("Não possuo conta");
-        registerButton.addActionListener(e -> mainView.changeScreen("register"));
+        registerButton.addActionListener(e -> this.controller.viewRegister());
 
         JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
             ComponentsFactory.createTitle("Seja bem-vindo de volta!"),
             ComponentsFactory.createGrayText("Email:"),
-            ComponentsFactory.createInput(""),
+            emailTextField,
             ComponentsFactory.createGrayText("Senha:"),
-            ComponentsFactory.createPasswordInput(""),
+            passwordTextField,
             ComponentsFactory.createLightText(" "),
             loginButton,
             registerButton
@@ -37,4 +69,6 @@ public class LoginView extends JPanel {
             ComponentsFactory.createScrollBarConstraints()
         );
     }
+
+    public void update() {}
 }

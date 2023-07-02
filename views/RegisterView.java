@@ -22,7 +22,10 @@ public class RegisterView extends JPanel implements Observer {
     private JTextField nameTextField = ComponentsFactory.createInput("");
     private JTextField emailTextField = ComponentsFactory.createInput("");
     private JTextField phoneTextField = ComponentsFactory.createMaskInput("(##) # ####-####", "");
-    private JTextField passwordTextField = ComponentsFactory.createInput("");
+    private JTextField passwordTextField = ComponentsFactory.createPasswordInput("");
+
+    private JRadioButton adminRadioButton = ComponentsFactory.createRadioButton("Sou organizador");
+    private JRadioButton userRadioButton = ComponentsFactory.createRadioButton("Sou participante");
 
     public String getName() {
         return this.nameTextField.getText();
@@ -40,12 +43,29 @@ public class RegisterView extends JPanel implements Observer {
         return this.passwordTextField.getText();
     }
 
-    public void initialize(Model model) {
-        this.model = model;
-        this.controller = new RegisterController();
-        this.controller.initialize(model, this);
+    public boolean getIsAdmin() {
+        return this.adminRadioButton.isSelected();
+    }
 
-        this.model.attachObserver(this);    
+    public boolean getIsUser() {
+        return this.userRadioButton.isSelected();
+    }
+    
+
+    public void clearFields() {
+        this.nameTextField.setText("");
+        this.emailTextField.setText("");
+        this.phoneTextField.setText("");
+        this.passwordTextField.setText("");
+        this.adminRadioButton.setSelected(false);
+        this.userRadioButton.setSelected(false);
+    }
+
+    public RegisterView(Model model, MainView mainView) {
+        this.model = model;
+        this.controller = new RegisterController(model, mainView, this);
+
+        this.model.attachObserver(this);
 
         this.display();
     }
@@ -53,23 +73,20 @@ public class RegisterView extends JPanel implements Observer {
     public void display() {
         this.setBackground(getBackground());
         this.setLayout(new GridBagLayout());
-    
-        JRadioButton adminRadioButton = ComponentsFactory.createRadioButton("Sou organizador");
-        JRadioButton participantRadioButton = ComponentsFactory.createRadioButton("Sou participante");
 
         ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(adminRadioButton);
-        buttonGroup.add(participantRadioButton);
+        buttonGroup.add(this.adminRadioButton);
+        buttonGroup.add(this.userRadioButton);
         
         JPanel radioButtons = new JPanel();
         radioButtons.setBackground(Constraints.CONTAINER_COLOR);
-        radioButtons.add(adminRadioButton);
-        radioButtons.add(participantRadioButton);
+        radioButtons.add(this.adminRadioButton);
+        radioButtons.add(this.userRadioButton);
 
         JButton registerButton = ComponentsFactory.createButton("Fazer registro");
-        registerButton.addActionListener(e -> this.controller.registerUser());
+        registerButton.addActionListener(e -> this.controller.register());
         JButton loginButton = ComponentsFactory.createLightButton("Já possuo conta");
-        loginButton.addActionListener(e -> this.controller.loginUser());
+        loginButton.addActionListener(e -> this.controller.viewLogin());
 
         JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),

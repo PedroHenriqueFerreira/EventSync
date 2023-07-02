@@ -4,21 +4,32 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.border.Border;
 
+import controllers.HomeController;
+import models.Model;
 import utils.ComponentsFactory;
 import utils.Constraints;
+import utils.Observer;
 
-public class HomeView extends JPanel {
-    public HomeView(MainView mainView) {
+public class HomeView extends JPanel implements Observer {
+    private Model model;
+    private HomeController controller;
+
+    public HomeView(Model model, MainView mainView) {
+        this.model = model;
+        this.controller = new HomeController(model, mainView, this);
+
+        this.model.attachObserver(this);    
+
+        this.display();
+    }
+
+    private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
         this.setBorder(Constraints.LARGE_PADDING_BORDER);
@@ -33,11 +44,11 @@ public class HomeView extends JPanel {
 
         JButton accountButton = ComponentsFactory.createButton("Minha conta");
         accountButton.setPreferredSize(Constraints.SMALL_DIMENSION);
-        accountButton.addActionListener(e -> mainView.changeScreen("account"));
+        accountButton.addActionListener(e -> this.controller.viewAccount());
 
         JButton logoutButton = ComponentsFactory.createLightButton("Sair");
         logoutButton.setPreferredSize(Constraints.SMALL_DIMENSION);
-        logoutButton.addActionListener(e -> mainView.changeScreen("login"));
+        logoutButton.addActionListener(e -> this.controller.logout());
 
         optionsPanel.add(accountButton);
         optionsPanel.add(logoutButton);
@@ -51,7 +62,6 @@ public class HomeView extends JPanel {
         searchPanel.add(ComponentsFactory.createSearchInput(""));
         searchPanel.add(searchButton);
 
-        
         header.add(logo, BorderLayout.WEST);
         header.add(searchPanel, BorderLayout.CENTER);
         header.add(optionsPanel, BorderLayout.EAST);
@@ -67,13 +77,26 @@ public class HomeView extends JPanel {
         mainPanel.setBackground(getBackground());
 
         GridBagConstraints scrollBarConstraints = ComponentsFactory.createScrollBarConstraints();
-        scrollBarConstraints.gridy = 1;
 
+        gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+        scrollBarConstraints.gridy = 1;
         this.add(ComponentsFactory.createScrollBar(mainPanel), scrollBarConstraints);
         
-        
         gridBagConstraints.gridy = 0;
-        mainPanel.add(ComponentsFactory.createTitle("Meus eventos"), gridBagConstraints);
+    
+        JPanel myEventsTitlePanel = new JPanel(new BorderLayout());
+        myEventsTitlePanel.setBackground(getBackground());
+        myEventsTitlePanel.add(ComponentsFactory.createTitle("Meus eventos"), BorderLayout.WEST);
+
+        JButton createEventButton = ComponentsFactory.createLightButton("Criar evento");
+        createEventButton.setPreferredSize(Constraints.SMALL_DIMENSION);
+        createEventButton.addActionListener(e -> this.controller.viewCreateEvent());
+
+        myEventsTitlePanel.add(createEventButton, BorderLayout.EAST);
+
+        gridBagConstraints.insets = Constraints.TEXT_INSETS;
+        mainPanel.add(myEventsTitlePanel, gridBagConstraints);
+        gridBagConstraints.insets = new Insets(0, 0, 0, 0);
 
         JPanel myEventsPanel = new JPanel(new GridBagLayout());
         myEventsPanel.setBackground(getBackground());
@@ -81,7 +104,9 @@ public class HomeView extends JPanel {
         mainPanel.add(myEventsPanel, gridBagConstraints);
 
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = Constraints.TEXT_INSETS;
         mainPanel.add(ComponentsFactory.createTitle("Todos os eventos"), gridBagConstraints);
+        gridBagConstraints.insets = new Insets(0, 0, 0, 0);
 
         JPanel allEventsPanel = new JPanel(new GridBagLayout());
         allEventsPanel.setBackground(getBackground());
@@ -93,7 +118,7 @@ public class HomeView extends JPanel {
 
         for (int i = 0; i < 10; i++) {
             JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
-            expandButton.addActionListener(e -> mainView.changeScreen("event"));
+            expandButton.addActionListener(e -> this.controller.viewEvent());
 
             JPanel container = ComponentsFactory.createContainer(
                 ComponentsFactory.createTitle("Master Class resinas"),
@@ -129,7 +154,7 @@ public class HomeView extends JPanel {
 
         for (int i = 0; i < 10; i++) {
             JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
-            expandButton.addActionListener(e -> mainView.changeScreen("event"));
+            expandButton.addActionListener(e -> this.controller.viewEvent());
 
             JPanel container = ComponentsFactory.createContainer(
                 ComponentsFactory.createTitle("Master Class resinas"),
@@ -163,4 +188,6 @@ public class HomeView extends JPanel {
             allEventsPanel.add(container, gridBagConstraints);
         }
     }
+
+    public void update() {}
 }
