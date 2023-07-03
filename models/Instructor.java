@@ -1,10 +1,19 @@
 package models;
 
 public class Instructor {
+    /*
+     * Os atributos de um usuário são:
+     * - name: nome do instrutor
+     * - email: email do instrutor
+     * - phone: telefone do instrutor
+     */
     private String name;
     private String email;
     private String phone;
 
+    /*
+     * Getters e setters
+     */
     public String getName() {
         return name;
     }
@@ -35,6 +44,9 @@ public class Instructor {
         this.phone = phone;
     }
 
+    /*
+     * Construtor da classe
+     */
     public Instructor(String name, String email, String phone){
         this.setName(name);
         this.setEmail(email);

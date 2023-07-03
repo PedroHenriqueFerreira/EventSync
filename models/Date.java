@@ -1,10 +1,19 @@
 package models;
 
 public class Date {
+    /*
+     * Os atributos de um usuário são:
+     * - day: dia da data
+     * - month: mês da data
+     * - year: ano da data
+     */
     int day;
     int month;
     int year;
 
+    /*
+     * Getters e setters
+     */
     public int getDay() {
         return day;
     }
@@ -35,12 +44,18 @@ public class Date {
         this.year = year;
     }
 
+    /*
+     * Construtor da classe
+     */
     public Date(int day, int month, int year){
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
+    /* 
+     * Retorna a data no formato dd/mm/aaaa
+     */
     public String toString(){
         return String.format("%02d/%02d/%04d", this.day, this.month, this.year);
     }

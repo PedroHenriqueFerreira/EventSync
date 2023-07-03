@@ -5,6 +5,20 @@ import java.util.*;
 import utils.CodeGenerator;
 
 public class Event {
+    /* 
+     * Os atributos de um evento são:
+     * - code: código do evento
+     * - admin: administrador do evento
+     * - name: nome do evento
+     * - description: descrição do evento
+     * - category: categoria do evento
+     * - date: data do evento
+     * - time: horário do evento
+     * - address: endereço do evento
+     * - price: preço do evento
+     * - participants: lista de participantes do evento
+     * - activities: lista de atividades do evento
+    */
     private String code;
     private Admin admin;
     private String name;
@@ -14,12 +28,12 @@ public class Event {
     private Time time;
     private Address address;
     private float price;
-
     private ArrayList<Participant> participants = new ArrayList<Participant>();
     private ArrayList<Activity> activities = new ArrayList<Activity>();
 
-    public Event() {}
-
+    /*
+     * Construtor da classe
+     */
     public Event(
         Admin admin,
         String name,
@@ -41,6 +55,9 @@ public class Event {
         this.setPrice(price);
     }
 
+    /* 
+     * Getters e setters
+     */
     public String getCode() {
         return code;
     }
@@ -151,24 +168,36 @@ public class Event {
         this.activities = activities;
     }
 
+    /*
+     * Adiciona um participante à lista de participantes do evento
+     */
     public void addParticipant(Participant participant) {
         if (participant == null) return;
 
         this.participants.add(participant);
     }
   
+    /*
+     * Remove um participante da lista de participantes do evento
+     */
     public void removeParticipant(Participant participant){
         if (participant == null) return;
 
         this.participants.remove(participant);
     }
 
+    /*
+     * Adiciona uma atividade à lista de atividades do evento
+     */
     public void addActivity(Activity activity) {
         if (activity == null) return;
 
         this.activities.add(activity);
     }
 
+    /*
+     * Remove uma atividade da lista de atividades do evento
+     */
     public void removeActivity(Activity activity) {
         if (activity == null) return;
 
