@@ -3,12 +3,23 @@ package models;
 import java.util.ArrayList;
 
 public abstract class User {
+	/*
+	 * Os atributos de um usuário são:
+	 * - name: nome do usuário
+	 * - email: email do usuário
+	 * - phone: telefone do usuário
+	 * - password: senha do usuário
+	 * - myEvents: lista de eventos do usuário
+	 */
 	protected String name;
 	protected String email;
 	protected String phone;
 	protected String password;
 	protected ArrayList<Event> myEvents = new ArrayList<Event>();
 
+	/*
+	 * Construtor da classe
+	 */
 	public User(String name, String email, String phone, String password) {
 		this.setName(name);
 		this.setEmail(email);
@@ -16,6 +27,9 @@ public abstract class User {
 		this.setPassword(password);
 	}
 
+	/*
+	 * Getters e setters
+	 */
 	public String getName() {
 		return name;
 	}
@@ -61,10 +75,25 @@ public abstract class User {
 		this.myEvents = myEvents;
 	}
 
-	abstract public void addEvent(Event event);
+	/* 
+	 * Adiciona um evento à lista de eventos do usuário
+	 */
+	public void addEvent(Event event) {
+		if (event == null) return;
+		this.myEvents.add(event);
+	}
 
-    abstract public void removeEvent(Event event);
+	/*
+	 * Remove um evento da lista de eventos do usuário
+	 */
+    public void removeEvent(Event event) {
+		if (event == null) return;
+		this.myEvents.remove(event);
+	}
 
+	/*
+	 * Retorna uma string com o nome e o email do usuário
+	 */
 	public String toString() {
 		return String.format("%s - %s", this.name, this.email);
 	}

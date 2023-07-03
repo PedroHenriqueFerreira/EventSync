@@ -1,21 +1,30 @@
 package models;
 
 public class Participant extends User {
+    /*
+     * Construtor da classe
+     */
     public Participant(String name, String email, String phone, String password) {
         super(name, email, phone, password);
     }
 
+    /*
+     * Adiciona um evento à lista de eventos do usuário
+     */
     public void addEvent(Event event) {
         if (event == null) return;
-        
-        this.myEvents.add(event);
+
+        super.addEvent(event);
         event.addParticipant(this);
     }
 
+    /*
+     * Remove um evento da lista de eventos do usuário
+     */
 	public void removeEvent(Event event) {
 		if (event == null) return;
 
-		this.myEvents.remove(event);
+        super.removeEvent(event);
         event.removeParticipant(this);
 	}
 }

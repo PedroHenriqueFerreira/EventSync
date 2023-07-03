@@ -1,6 +1,13 @@
 package models;
 
 public class Address {
+    /*
+     * Os atributos de um usuário são:
+     * - state: estado do endereço
+     * - city: cidade do endereço
+     * - street: rua do endereço
+     * - number: número do endereço
+     */
     private String state;
     private String city;
     private String street;
@@ -46,6 +53,9 @@ public class Address {
         this.number = number;
     }
 
+    /*
+     * Construtor da classe
+     */
     public Address(String state, String city, String street, int number){
         this.setState(state);
         this.setCity(city);
@@ -53,6 +63,9 @@ public class Address {
         this.setNumber(number);        
     };
 
+    /*
+     * Retorna uma string com o endereço formatado
+     */
     public String toString(){
         return String.format("%s, N° %d, %s - %s", this.street, this.number, this.city, this.state);
     }
