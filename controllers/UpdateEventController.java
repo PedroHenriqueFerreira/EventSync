@@ -2,8 +2,6 @@ package controllers;
 
 import java.util.ArrayList;
 
-import models.Address;
-import models.Admin;
 import models.Event;
 import models.Model;
 import models.Participant;
@@ -14,11 +12,17 @@ import utils.Validator;
 import views.MainView;
 import views.UpdateEventView;
 
+/*
+ * Controller de atualizar evento
+ */
 public class UpdateEventController implements Observer {
     private Model model;
     private MainView mainView;
     private UpdateEventView view;
 
+    /*
+     * Construtor
+     */
     public UpdateEventController(Model model, MainView mainView, UpdateEventView view) {
         this.model = model;
 
@@ -26,6 +30,9 @@ public class UpdateEventController implements Observer {
         this.view = view;
     }
     
+    /*
+     * Atualiza um evento
+     */
     public void updateEvent() {
         ArrayList<String> errors = new ArrayList<String>();
 
@@ -39,6 +46,10 @@ public class UpdateEventController implements Observer {
         String street = this.view.getStreet();
         String addressNumber = this.view.getAddressNumber();
         String price = this.view.getPrice();
+
+        /*
+         * Validação de campos
+         */
 
         if (this.model.getLoggedUser() instanceof Participant) {
             errors.add("• Você não tem permissão para atualizar eventos");
@@ -89,6 +100,9 @@ public class UpdateEventController implements Observer {
             return;
         }
 
+        /*
+         * Atualização do evento selecionado
+         */
         Event event = this.model.getSelectedEvent();
 
         event.setName(name);
@@ -104,10 +118,16 @@ public class UpdateEventController implements Observer {
         
         this.view.clearFields();
 
+        /*
+         * Notifica os observadores e muda para a view de evento
+         */
         this.model.notifyObservers();
         this.mainView.changeView("event");
     }
 
+    /*
+     * Muda para a view de evento
+     */
     public void viewEvent() {
         this.view.clearFields();
         this.mainView.changeView("event");

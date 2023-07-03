@@ -59,9 +59,32 @@ public class EventController implements Observer {
     }
 
     /*
+     * Remove o pagamento do usuário logado e remove o evento do usuário logado
+     */
+    public void unbuyEvent() {
+        User loggedUser = this.model.getLoggedUser();
+        Event selectedEvent = this.model.getSelectedEvent();
+
+        loggedUser.removeEvent(selectedEvent);
+        
+        ArrayList<Payment> payments = this.model.getPayments();
+
+        for (Payment payment : payments) {
+            if (payment.getEvent() == selectedEvent && payment.getParticipant() == loggedUser) {
+                this.model.removePayment(payment.getCode());
+                break;
+            }
+        }
+
+        selectedEvent.removeParticipant((Participant) loggedUser);
+
+        this.model.notifyObservers();
+    }
+
+    /*
      * Cria um pagamento e adiciona o evento ao usuário logado
      */
-    public void viewBuyEvent() {
+    public void buyEvent() {
         /* 
          * Cria um objeto Time com a hora e minuto atual
          */

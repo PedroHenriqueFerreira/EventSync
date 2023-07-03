@@ -7,8 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controllers.ActivityController;
-import controllers.LoginController;
 import controllers.UpdateActivityController;
 import models.Activity;
 import models.Model;
@@ -16,6 +14,9 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de atualização de atividade
+ */
 public class UpdateActivityView extends JPanel implements Observer {
     private Model model;
     private UpdateActivityController controller;
@@ -28,6 +29,9 @@ public class UpdateActivityView extends JPanel implements Observer {
     private JTextField dateTextField = ComponentsFactory.createMaskInput("##/##/####", "");
     private JTextField timeTextField = ComponentsFactory.createMaskInput("##:##h", "");
 
+    /*
+     * Retorna os valores dos campos de texto
+     */
     public String getName() {
         return this.nameTextField.getText();
     }
@@ -56,6 +60,9 @@ public class UpdateActivityView extends JPanel implements Observer {
         return this.timeTextField.getText();
     }
 
+    /*
+     * Limpa os campos de texto
+     */
     public void clearFields() {
         this.nameTextField.setText("");
         this.descriptionTextField.setText("");
@@ -66,6 +73,9 @@ public class UpdateActivityView extends JPanel implements Observer {
         this.timeTextField.setText("");
     }
 
+    /*
+     * Construtor
+     */
     public UpdateActivityView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new UpdateActivityController(model, mainView, this);
@@ -75,6 +85,9 @@ public class UpdateActivityView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -113,7 +126,13 @@ public class UpdateActivityView extends JPanel implements Observer {
         );
     }
 
+    /*
+     * Atualiza a view
+     */
     public void update() {
+        /*
+         * Atualiza os campos de texto com os dados da atividade selecionada
+         */
         Activity activity = this.model.getSelectedActivity();
 
         if (activity == null) return;

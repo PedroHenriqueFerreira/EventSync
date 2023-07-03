@@ -5,16 +5,17 @@ import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import controllers.ActivityController;
-import controllers.LoginController;
 import models.Activity;
 import models.Model;
 import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de visualização de atividade
+ */
 public class ActivityView extends JPanel implements Observer {
     private Model model;
     private ActivityController controller;
@@ -26,6 +27,9 @@ public class ActivityView extends JPanel implements Observer {
     private JLabel instructorPhoneLabel = ComponentsFactory.createLightText(" ");
     private JLabel dateTimeLabel = ComponentsFactory.createLightText(" ");
 
+    /*
+     * Retorna o valor dos campos
+     */
     public ActivityView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new ActivityController(model, mainView, this);
@@ -35,6 +39,9 @@ public class ActivityView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -76,6 +83,9 @@ public class ActivityView extends JPanel implements Observer {
     }
 
     public void update() {
+        /*
+         * Atualiza os campos com os valores do evento selecionado
+         */
         Activity activity = this.model.getSelectedActivity();
 
         if (activity == null) return;

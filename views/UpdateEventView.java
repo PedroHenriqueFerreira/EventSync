@@ -14,6 +14,9 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de atualização de evento
+ */
 public class UpdateEventView extends JPanel implements Observer {
     private Model model;
     private UpdateEventController controller;
@@ -28,6 +31,10 @@ public class UpdateEventView extends JPanel implements Observer {
     private JTextField streetTextField = ComponentsFactory.createInput("");
     private JTextField addressNumberTextField = ComponentsFactory.createNumberInput("0");
     private JTextField priceTextField = ComponentsFactory.createCurrencyInput("0");
+
+    /*
+     * Retorna o valor dos campos
+     */
 
     public String getName() {
         return this.nameTextField.getText();
@@ -69,6 +76,9 @@ public class UpdateEventView extends JPanel implements Observer {
         return this.priceTextField.getText();
     }
 
+    /*
+     * Limpa os campos
+     */
     public void clearFields() {
         this.nameTextField.setText("");
         this.descriptionTextField.setText("");
@@ -82,6 +92,9 @@ public class UpdateEventView extends JPanel implements Observer {
         this.priceTextField.setText("0");
     }
 
+    /*
+     * Construtor
+     */
     public UpdateEventView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new UpdateEventController(model, mainView, this);
@@ -91,6 +104,9 @@ public class UpdateEventView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -136,6 +152,7 @@ public class UpdateEventView extends JPanel implements Observer {
     }
 
     public void update() {
+        // Atualiza os campos com os dados do evento selecionado
         Event event = this.model.getSelectedEvent();
 
         if (event == null) return;

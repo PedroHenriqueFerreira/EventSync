@@ -174,8 +174,13 @@ public class EventView extends JPanel implements Observer {
             this.updateOrBuyButton.setText("Atualizar evento");
             this.updateOrBuyButton.addActionListener(e -> this.controller.viewUpdateEvent());
         } else {
-            this.updateOrBuyButton.setText("Comprar");
-            this.updateOrBuyButton.addActionListener(e -> this.controller.viewBuyEvent());
+            if (user.getMyEvents().contains(event)) {
+                this.updateOrBuyButton.setText("Estornar ingresso");
+                this.updateOrBuyButton.addActionListener(e -> this.controller.unbuyEvent());
+            } else {
+                this.updateOrBuyButton.setText("Comprar");
+                this.updateOrBuyButton.addActionListener(e -> this.controller.buyEvent());
+            }
         }
     }
 }

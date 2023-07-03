@@ -149,6 +149,13 @@ public class Model {
     }
 
     /* 
+     * Retorna um ArrayList de todos os pagamentos
+     */
+    public ArrayList<Payment> getPayments() {
+        return new ArrayList<Payment>(this.payments.values());
+    }
+
+    /* 
      * Retorna o usuário logado no momento
      */
     public User getLoggedUser() {
