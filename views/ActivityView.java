@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import controllers.ActivityController;
 import models.Activity;
+import models.Admin;
 import models.Model;
 import utils.ComponentsFactory;
 import utils.Constraints;
@@ -26,6 +27,9 @@ public class ActivityView extends JPanel implements Observer {
     private JLabel instructorEmailLabel = ComponentsFactory.createLightText(" ");
     private JLabel instructorPhoneLabel = ComponentsFactory.createLightText(" ");
     private JLabel dateTimeLabel = ComponentsFactory.createLightText(" ");
+
+    private JButton updateButton = ComponentsFactory.createButton("Atualizar atividade");
+    private JButton deleteButton = ComponentsFactory.createLightButton("Apagar atividade");
 
     /*
      * Retorna o valor dos campos
@@ -46,11 +50,8 @@ public class ActivityView extends JPanel implements Observer {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
         
-        JButton updateButton = ComponentsFactory.createButton("Atualizar atividade");
-        updateButton.addActionListener(e -> this.controller.updateActivity());
-
-        JButton deleteButton = ComponentsFactory.createLightButton("Apagar atividade");
-        deleteButton.addActionListener(e -> this.controller.deleteActivity());
+        this.updateButton.addActionListener(e -> this.controller.updateActivity());
+        this.deleteButton.addActionListener(e -> this.controller.deleteActivity());
         
         JButton eventButton = ComponentsFactory.createLightButton("Voltar");
         eventButton.addActionListener(e -> this.controller.viewEvent());
@@ -71,8 +72,8 @@ public class ActivityView extends JPanel implements Observer {
             ComponentsFactory.createGrayText("Data e Hora:"),
             this.dateTimeLabel,
             ComponentsFactory.createLightText(" "),
-            updateButton,
-            deleteButton,
+            this.updateButton,
+            this.deleteButton,
             eventButton
         );
 
@@ -96,5 +97,13 @@ public class ActivityView extends JPanel implements Observer {
         this.instructorEmailLabel.setText(activity.getInstructor().getEmail());
         this.instructorPhoneLabel.setText(activity.getInstructor().getPhone());
         this.dateTimeLabel.setText(activity.getDate().toString() + " às " + activity.getTime().toString());
+
+        if (this.model.getLoggedUser() instanceof Admin) {
+            this.updateButton.setVisible(true);
+            this.deleteButton.setVisible(true);
+        } else {
+            this.updateButton.setVisible(false);
+            this.deleteButton.setVisible(false);
+        }
     }
 }

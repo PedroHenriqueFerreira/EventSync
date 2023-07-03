@@ -252,6 +252,8 @@ public class Model {
 
         event.addActivity(activity);
 
+        this.addEvent(event);
+
         Event sesComp = new Event(
             admin,
             "SesComp 2023",

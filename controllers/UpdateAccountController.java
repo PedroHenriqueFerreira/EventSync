@@ -82,10 +82,10 @@ public class UpdateAccountController implements Observer {
 
         this.model.removeUser(user.getEmail());
 
-        user.setName(this.view.getName());
-        user.setEmail(this.view.getEmail());
-        user.setPhone(this.view.getPhone());
-        user.setPassword(this.view.getPassword());
+        user.setName(name);
+        user.setEmail(email);
+        user.setPhone(phone);
+        user.setPassword(password);
 
         this.model.addUser(user);
 

@@ -229,7 +229,9 @@ public class HomeView extends JPanel implements Observer {
     /*
      * Atualiza a view de acordo com o modelo
      */
-    public void update() {        
+    public void update() {  
+        if (this.model.getLoggedUser() == null) return;
+        
         if (this.model.getLoggedUser() instanceof Admin) {
             this.createEventButton.setVisible(true);
         } else {

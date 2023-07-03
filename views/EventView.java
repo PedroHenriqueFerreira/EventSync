@@ -106,6 +106,8 @@ public class EventView extends JPanel implements Observer {
     public void update() {
         User user = this.model.getLoggedUser();
 
+        if (user == null) return;
+
         /*
          * Se o usuário logado for um administrador, exibe o botão de criar atividade
          */

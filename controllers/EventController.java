@@ -76,8 +76,14 @@ public class EventController implements Observer {
             }
         }
 
+        /*
+         * Remove o usuário logado do evento
+         */
         selectedEvent.removeParticipant((Participant) loggedUser);
 
+        /*
+         * Notifica os observadores
+         */
         this.model.notifyObservers();
     }
 
