@@ -18,11 +18,17 @@ import utils.Observer;
 import views.EventView;
 import views.MainView;
 
+/*
+ * Controller de eventos
+ */
 public class EventController implements Observer {
     private Model model;
     private MainView mainView;
     private EventView view;
 
+    /*
+     * Construtor
+     */
     public EventController(Model model, MainView mainView, EventView view) {
         this.model = model;
 
@@ -30,28 +36,49 @@ public class EventController implements Observer {
         this.view = view;
     }        
 
+    /*
+     * Muda para a view de criar atividade
+     */
     public void viewCreateActivity() {
         this.mainView.changeView("create_activity");
     }
 
+    /* 
+     * Seleciona uma atividade e muda para a view de atividade
+     */
     public void viewActivity(Activity activity) {
         this.model.setSelectedActivity(activity);
         this.mainView.changeView("activity");
     }
 
+    /*
+     * Muda para a view de atualizar evento
+     */
     public void viewUpdateEvent() {
         this.mainView.changeView("update_event");
     }
 
+    /*
+     * Cria um pagamento e adiciona o evento ao usuário logado
+     */
     public void viewBuyEvent() {
+        /* 
+         * Cria um objeto Time com a hora e minuto atual
+         */
         Time time = new Time(LocalTime.now().getHour(), LocalTime.now().getMinute());
 
+        /*
+         * Cria um objeto Date com o dia, mês e ano atual
+         */
         Date date = new Date(
             LocalDate.now().getDayOfMonth(), 
             LocalDate.now().getMonthValue(), 
             LocalDate.now().getYear()
         );
 
+        /*
+         * Cria um array de erros
+         */
         ArrayList<String> errors = new ArrayList<String>();
 
         User loggedUser = this.model.getLoggedUser();
@@ -84,6 +111,9 @@ public class EventController implements Observer {
         this.model.notifyObservers();
     }
 
+    /*
+     * Muda para a view home
+     */
     public void viewHome() {
         this.mainView.changeView("home");
     }

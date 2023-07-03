@@ -13,10 +13,16 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de login
+ */
 public class LoginView extends JPanel implements Observer {
     private Model model;
     private LoginController controller;
 
+    /*
+     * Campos de texto
+     */
     private JTextField emailTextField = ComponentsFactory.createInput("");
     private JTextField passwordTextField = ComponentsFactory.createPasswordInput("");
 
@@ -28,11 +34,17 @@ public class LoginView extends JPanel implements Observer {
         return this.passwordTextField.getText();
     }
 
+    /*
+     * Limpa os campos de texto
+     */
     public void clearFields() {
         this.emailTextField.setText("");
         this.passwordTextField.setText("");
     }
 
+    /*
+     * Construtor
+     */
     public LoginView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new LoginController(model, mainView, this);
@@ -42,6 +54,9 @@ public class LoginView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());

@@ -10,7 +10,7 @@ public class Main {
                 Model model = new Model();
                 MainView mainView = new MainView(model);
 
-                mainView.changeView("home");
+                mainView.changeView("login");
 
                 model.loadData();
             }

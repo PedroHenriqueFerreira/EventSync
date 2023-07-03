@@ -7,11 +7,20 @@ import utils.Constraints;
 
 import java.awt.CardLayout;
 
+/*
+ * View principal que contém todas as outras views
+ */
 public class MainView extends JFrame {
+    /*
+     * Layout de cartas
+     */
     private CardLayout cardLayout;
 
     private Model model;
 
+    /*
+     * Construtor
+     */ 
     public MainView(Model model) {
         super("Sistema de eventos");
 
@@ -25,8 +34,11 @@ public class MainView extends JFrame {
 
         this.setLayout(this.cardLayout);
 
-        this.add(new RegisterView(this.model, this), "register");
+        /*
+         * Adiciona as views passando o model e a view principal
+         */
         this.add(new LoginView(this.model, this), "login");
+        this.add(new RegisterView(this.model, this), "register");
         this.add(new HomeView(this.model, this), "home");
         this.add(new AccountView(this.model, this), "account");
         this.add(new UpdateAccountView(this.model, this), "update_account");
@@ -37,10 +49,10 @@ public class MainView extends JFrame {
         this.add(new CreateActivityView(this.model, this), "create_activity");
         this.add(new UpdateActivityView(this.model, this), "update_activity");
     }
-    
-    public void createViews() {
-    }
 
+    /*
+     * Troca a view atual pela a view com o nome passado
+     */
     public void changeView(String screen) {
         this.cardLayout.show(this.getContentPane(), screen);
     }

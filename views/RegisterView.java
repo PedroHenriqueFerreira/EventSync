@@ -15,10 +15,16 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de registro
+ */
 public class RegisterView extends JPanel implements Observer {
     private Model model;
     private RegisterController controller;
 
+    /*
+     * Campos de texto
+     */
     private JTextField nameTextField = ComponentsFactory.createInput("");
     private JTextField emailTextField = ComponentsFactory.createInput("");
     private JTextField phoneTextField = ComponentsFactory.createMaskInput("(##) # ####-####", "");
@@ -27,6 +33,9 @@ public class RegisterView extends JPanel implements Observer {
     private JRadioButton adminRadioButton = ComponentsFactory.createRadioButton("Sou organizador");
     private JRadioButton userRadioButton = ComponentsFactory.createRadioButton("Sou participante");
 
+    /*
+     * Retorna os valores dos campos de texto
+     */
     public String getName() {
         return this.nameTextField.getText();
     }
@@ -50,8 +59,10 @@ public class RegisterView extends JPanel implements Observer {
     public boolean getIsUser() {
         return this.userRadioButton.isSelected();
     }
-    
 
+    /*
+     * Limpa os campos de texto
+     */
     public void clearFields() {
         this.nameTextField.setText("");
         this.emailTextField.setText("");
@@ -61,6 +72,9 @@ public class RegisterView extends JPanel implements Observer {
         this.userRadioButton.setSelected(false);
     }
 
+    /*
+     * Construtor
+     */
     public RegisterView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new RegisterController(model, mainView, this);
@@ -70,6 +84,9 @@ public class RegisterView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     public void display() {
         this.setBackground(getBackground());
         this.setLayout(new GridBagLayout());

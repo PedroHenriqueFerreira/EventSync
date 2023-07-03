@@ -8,14 +8,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.UpdateAccountController;
-import models.Admin;
 import models.Model;
-import models.Participant;
 import models.User;
 import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de atualização de conta
+ */
 public class UpdateAccountView extends JPanel implements Observer {
     private Model model;
     private UpdateAccountController controller;
@@ -25,6 +26,9 @@ public class UpdateAccountView extends JPanel implements Observer {
     private JTextField phoneTextField = ComponentsFactory.createMaskInput("(##) # ####-####", "");
     private JTextField passwordTextField = ComponentsFactory.createPasswordInput("");
 
+    /*
+     * Retorna os valores dos campos de texto
+     */
     public String getName() {
         return this.nameTextField.getText();
     }
@@ -41,6 +45,9 @@ public class UpdateAccountView extends JPanel implements Observer {
         return this.passwordTextField.getText();
     }
 
+    /*
+     * Construtor
+     */
     public UpdateAccountView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new UpdateAccountController(model, mainView, this);
@@ -50,6 +57,9 @@ public class UpdateAccountView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -82,9 +92,12 @@ public class UpdateAccountView extends JPanel implements Observer {
     }
 
     public void update() {
-        if (this.model.getLoggedUser() == null) return;
-        
+        /*
+         * Atualiza os campos de texto com os dados do usuário logado
+         */
         User user = this.model.getLoggedUser();
+
+        if (user == null) return;
         
         this.nameTextField.setText(user.getName());
         this.emailTextField.setText(user.getEmail());

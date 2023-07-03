@@ -27,6 +27,8 @@ public abstract class User {
 		this.setPassword(password);
 	}
 
+	public User() {}
+
 	/*
 	 * Getters e setters
 	 */

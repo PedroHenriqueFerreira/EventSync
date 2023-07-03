@@ -4,18 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.HomeController;
-import models.Address;
 import models.Admin;
 import models.Event;
 import models.Model;
@@ -23,12 +20,17 @@ import models.User;
 import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
-import utils.Transform;
 
+/*
+ * View de home
+ */
 public class HomeView extends JPanel implements Observer {
     private Model model;
     private HomeController controller;
 
+    /*
+     * Painéis de eventos
+     */
     private JPanel myEventsPanel = new JPanel(
         new GridLayout(
             0, 4, 
@@ -38,10 +40,15 @@ public class HomeView extends JPanel implements Observer {
     );
     
     private JPanel allEventsPanel = new JPanel(new GridBagLayout());
+
+    /*
+     * Botões de ação
+     */
     private JButton createEventButton = ComponentsFactory.createLightButton("Criar evento");
 
-    private JLabel myEventsLabel =  ComponentsFactory.createTitle("Meus eventos");
-
+    /*
+     * Construtor
+     */
     public HomeView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new HomeController(model, mainView, this);
@@ -51,6 +58,9 @@ public class HomeView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Cria o cabeçalho da view
+     */
     private JPanel createHeader() {
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(getBackground());
@@ -75,6 +85,9 @@ public class HomeView extends JPanel implements Observer {
         return header;
     }
 
+    /*
+     * Cria o painel de eventos do usuário
+     */
     private JPanel createMyEventsTitlePanel() {
         JPanel myEventsTitlePanel = new JPanel(new BorderLayout());
         myEventsTitlePanel.setBackground(getBackground());
@@ -83,11 +96,14 @@ public class HomeView extends JPanel implements Observer {
         this.createEventButton.addActionListener(e -> this.controller.viewCreateEvent());
 
         myEventsTitlePanel.add(createEventButton, BorderLayout.EAST);
-        myEventsTitlePanel.add(this.myEventsLabel, BorderLayout.WEST);
+        myEventsTitlePanel.add(ComponentsFactory.createTitle("Meus eventos"), BorderLayout.WEST);
 
         return myEventsTitlePanel;
     }
 
+    /*
+     * Cria um container para um evento
+     */
     private JPanel createContainer(Event event) {
         JButton expandButton = ComponentsFactory.createLightButton("Ver mais detalhes");
         expandButton.addActionListener(e -> this.controller.viewEvent(event));
@@ -105,6 +121,9 @@ public class HomeView extends JPanel implements Observer {
         return container;
     }
     
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -140,6 +159,9 @@ public class HomeView extends JPanel implements Observer {
         this.update();
     }
 
+    /*
+     * Atualiza os eventos do usuário
+     */
     private void updateMyEvents() {
         this.myEventsPanel.removeAll();
         
@@ -149,21 +171,21 @@ public class HomeView extends JPanel implements Observer {
 
         ArrayList<Event> userEvents = user.getMyEvents();
 
-        if (userEvents == null || userEvents.size() == 0) {
-            this.myEventsLabel.setVisible(false);
-
-            return;
-        }
-
-        this.myEventsLabel.setVisible(true);
-
         for (Event userEvent: userEvents) {
             this.myEventsPanel.add(this.createContainer(userEvent));
         }
     }
 
+    /*
+     * Atualiza todos os eventos
+     */
     private void updateAllEvents() {
         this.allEventsPanel.removeAll();
+
+        /*
+         * Se o usuário for admin, não exibe os eventos de outros admins
+         */
+        if (this.model.getLoggedUser() instanceof Admin) return;
 
         GridBagConstraints allEventsConstraints = new GridBagConstraints();
         allEventsConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -204,6 +226,9 @@ public class HomeView extends JPanel implements Observer {
         }
     }
 
+    /*
+     * Atualiza a view de acordo com o modelo
+     */
     public void update() {        
         if (this.model.getLoggedUser() instanceof Admin) {
             this.createEventButton.setVisible(true);

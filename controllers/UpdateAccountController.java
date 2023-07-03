@@ -2,9 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
-import models.Admin;
 import models.Model;
-import models.Participant;
 import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
@@ -12,11 +10,17 @@ import utils.Validator;
 import views.MainView;
 import views.UpdateAccountView;
 
+/*
+ * Controller de atualização de conta
+ */
 public class UpdateAccountController implements Observer {
     private Model model;
     private MainView mainView;
     private UpdateAccountView view;
 
+    /*
+     * Construtor
+     */
     public UpdateAccountController(Model model, MainView mainView, UpdateAccountView view) {
         this.model = model;
 
@@ -24,7 +28,13 @@ public class UpdateAccountController implements Observer {
         this.view = view;
     }
 
+    /*
+     * Atualiza a conta do usuário
+     */
     public void updateAccount() {
+        /*
+         * Validação dos campos
+         */
         ArrayList<String> errors = new ArrayList<String>();
 
         String name = this.view.getName();
@@ -56,12 +66,19 @@ public class UpdateAccountController implements Observer {
             errors.add("• Email já cadastrado");
         }
 
+        /*
+         * Exibe os erros encontrados no popup
+         */
         if (errors.size() > 0) {
             ComponentsFactory.createPopup(errors);
             return;
         }
 
         User user = this.model.getLoggedUser();
+
+        /*
+         * Remove o usuário antigo e adiciona o novo
+         */
 
         this.model.removeUser(user.getEmail());
 
@@ -72,9 +89,15 @@ public class UpdateAccountController implements Observer {
 
         this.model.addUser(user);
 
+        /*
+         * Volta para a tela de conta
+         */
         this.mainView.changeView("account");
     }
 
+    /*
+     * Volta para a tela de conta
+     */
     public void viewAccount() {
         this.mainView.changeView("account");
     }

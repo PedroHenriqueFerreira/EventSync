@@ -193,61 +193,81 @@ public class Model {
         this.notifyObservers();
     }
 
+    /*
+     * Carrega os dados iniciais da aplicação
+     */
     public void loadData() {
         Participant participant = new Participant(
             "Participante",
             "participante@gmail.com",
-            "(88) 99342-3244",
+            "(12) 34567-8910",
             "12345678"
         );
 
-        Participant participant2 = new Participant(
-            "Participante 2",
-            "participante2@gmail.com",
-            "(88) 99342-3244",
+        Participant joao = new Participant(
+            "Joao",
+            "joao@gmail.com",
+            "(12) 34567-8910",
             "12345678"
-        );
-
+            );
+            
         this.addUser(participant);
-        this.addUser(participant2);
+        this.addUser(joao);
 
         Admin admin = new Admin(
             "Admin",
             "admin@gmail.com",
-            "(88) 54544-3244",
+            "(12) 34567-8910",
             "12345678"
         );
-
+            
         this.addUser(admin);
-
         this.setLoggedUser(admin);
 
-        for (int i = 1; i <= 5; i++) {
-            for (int j = 0; j < 2; j++) {
-                Event event = new Event(
-                    admin,
-                    "Evento " + i,
-                    "Descrição do evento " + i,
-                    "Categoria " + i,
-                    new Date(1, 1, 2023),
-                    new Time(12, 30),
-                    new Address("CE", "Russas", "Felipe Santiago", 10),
-                    10.0f
-                );
+        Event event = new Event(
+            admin,
+            "Evento 1",
+            "Descrição do evento 1",
+            "Categoria 1",
+            new Date(1, 1, 2023),
+            new Time(0, 0),
+            new Address("Estado", "Cidade", "Rua", 0),
+            0
+        );
 
-                Activity activity = new Activity(
-                    "Atividade " + j, 
-                    "Descrição da atividade " + j,
-                    new Instructor("Joao", "Joao@gmail.com", "(88) 99342-3244"),
-                    new Date(1, 1, 2023),
-                    new Time(12, 30)
-                );
+        Activity activity = new Activity(
+            "Atividade 1", 
+            "Descrição da atividade 1",
+            new Instructor("Instrutor", "instrutor@gmail.com", "(12) 34567-8910"),
+            new Date(1, 1, 2023),
+            new Time(0, 0)
+        );
 
-                event.addActivity(activity);
-    
-                this.addEvent(event);
-            }
-        }
+        event.addActivity(activity);
+
+        Event sesComp = new Event(
+            admin,
+            "SesComp 2023",
+            "Semana da Computação 2023",
+            "Tecnologia",
+            new Date(1, 1, 2023),
+            new Time(0, 0),
+            new Address("Ceará", "Russas", "Felipe Santiago", 0),
+            0
+        );
+
+        Activity cursoPython = new Activity(
+            "Curso de Python",
+            "Curso de Python para iniciantes",
+            new Instructor("Instrutor", "instrutor@gmail.com", "(12) 34567-8910"),
+            new Date(1, 1, 2023),
+            new Time(0, 0)
+        );
+
+        sesComp.addActivity(cursoPython);
+
+        this.addEvent(sesComp);
+        this.setLoggedUser(null);
     }
     
     /*

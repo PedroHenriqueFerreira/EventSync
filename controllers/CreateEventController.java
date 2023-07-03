@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 import models.Address;
 import models.Admin;
-import models.Date;
 import models.Event;
 import models.Model;
 import models.Participant;
-import models.Time;
-import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
 import utils.Transform;
@@ -17,11 +14,17 @@ import utils.Validator;
 import views.CreateEventView;
 import views.MainView;
 
+/*
+ * Controller de criar evento
+ */
 public class CreateEventController implements Observer {
     private Model model;
     private MainView mainView;
     private CreateEventView view;
 
+    /*
+     * Construtor
+     */
     public CreateEventController(Model model, MainView mainView, CreateEventView view) {
         this.model = model;
 
@@ -29,7 +32,13 @@ public class CreateEventController implements Observer {
         this.view = view;
     }
     
+    /*
+     * Cria um evento
+     */
     public void createEvent() {
+        /*
+         * Validação dos dados
+         */
         ArrayList<String> errors = new ArrayList<String>();
 
         String name = this.view.getName();
@@ -87,11 +96,18 @@ public class CreateEventController implements Observer {
             errors.add("• O preço deve ser maior que 0");
         }
 
+        /*
+         * Exibição dos erros encontrados
+         */
         if (errors.size() > 0) {
             ComponentsFactory.createPopup(errors);
             return;
         }
         
+        /*
+         * Criação do evento
+         */
+
         Address address = new Address(
             state,
             city,
@@ -110,12 +126,18 @@ public class CreateEventController implements Observer {
             Transform.toFloat(price)
         );
 
+        /* 
+         * Adiciona o evento ao model e retorna para a home
+         */
         this.model.addEvent(event);
         
         this.view.clearFields();
         this.mainView.changeView("home");
     }
 
+    /*
+     * Volta para a home
+     */
     public void viewHome() {
         this.view.clearFields();
         this.mainView.changeView("home");

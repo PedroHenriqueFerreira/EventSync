@@ -20,7 +20,9 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
-
+/*
+ * View de visualização de evento
+ */
 public class EventView extends JPanel implements Observer {
     private Model model;
     private EventController controller;
@@ -39,6 +41,9 @@ public class EventView extends JPanel implements Observer {
 
     private JButton updateOrBuyButton = ComponentsFactory.createButton("Atualizar evento");
 
+    /*
+     * Construtor
+     */
     public EventView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new EventController(model, mainView, this);
@@ -48,6 +53,9 @@ public class EventView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -98,15 +106,25 @@ public class EventView extends JPanel implements Observer {
     public void update() {
         User user = this.model.getLoggedUser();
 
+        /*
+         * Se o usuário logado for um administrador, exibe o botão de criar atividade
+         */
         if (user instanceof Admin) {
             this.createActivity.setVisible(true);
         } else {
             this.createActivity.setVisible(false);
         }
 
+        /*
+         * Se não houver evento selecionado, não exibe nada
+         */
         Event event = this.model.getSelectedEvent();
 
         if (event == null) return;
+
+        /*
+         * Exibe as informações do evento selecionado
+         */
 
         this.codeTextLabel.setText(event.getCode());
         this.nameTextLabel.setText(event.getName());
@@ -116,6 +134,10 @@ public class EventView extends JPanel implements Observer {
         this.addressTextLabel.setText(event.getAddress().toString());
         this.priceTextLabel.setText(String.format("R$ %.2f", event.getPrice()));
         this.participantsTextLabel.setText(event.getParticipants().size() + "");
+
+        /* 
+         * Exibe as atividades do evento selecionado
+         */
 
         this.activitiesPanel.removeAll();
 
@@ -138,6 +160,10 @@ public class EventView extends JPanel implements Observer {
             this.activitiesPanel.add(button, gridBagConstraints);
         }
 
+        /*
+         * Exibe o botão de atualizar evento ou comprar ingresso
+         */
+        
         ActionListener[] listeners = this.updateOrBuyButton.getActionListeners();
 
         for (ActionListener listener : listeners) {

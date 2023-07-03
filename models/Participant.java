@@ -8,6 +8,8 @@ public class Participant extends User {
         super(name, email, phone, password);
     }
 
+    public Participant() {}
+
     /*
      * Adiciona um evento à lista de eventos do usuário
      */

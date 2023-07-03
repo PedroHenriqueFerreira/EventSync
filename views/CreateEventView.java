@@ -1,15 +1,10 @@
 package views;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import controllers.CreateEventController;
@@ -18,6 +13,9 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de criação de evento
+ */
 public class CreateEventView extends JPanel implements Observer {
     private Model model;
     private CreateEventController controller;
@@ -32,6 +30,10 @@ public class CreateEventView extends JPanel implements Observer {
     private JTextField streetTextField = ComponentsFactory.createInput("");
     private JTextField addressNumberTextField = ComponentsFactory.createNumberInput("0");
     private JTextField priceTextField = ComponentsFactory.createCurrencyInput("0");
+
+    /*
+     * Retorna os valores dos campos de texto
+     */
 
     public String getName() {
         return this.nameTextField.getText();
@@ -73,6 +75,9 @@ public class CreateEventView extends JPanel implements Observer {
         return this.priceTextField.getText();
     }
 
+    /*
+     * Limpam os campos de texto
+     */
     public void clearFields() {
         this.nameTextField.setText("");
         this.descriptionTextField.setText("");
@@ -86,6 +91,9 @@ public class CreateEventView extends JPanel implements Observer {
         this.priceTextField.setText("0");
     }
 
+    /* 
+     * Construtor
+     */
     public CreateEventView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new CreateEventController(model, mainView, this);
@@ -95,6 +103,9 @@ public class CreateEventView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());

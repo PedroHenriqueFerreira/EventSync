@@ -15,6 +15,9 @@ import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
 
+/*
+ * View de conta
+ */
 public class AccountView extends JPanel implements Observer {
     private Model model;
     private AccountController controller;
@@ -25,6 +28,9 @@ public class AccountView extends JPanel implements Observer {
     private JLabel passwordLabel = ComponentsFactory.createLightText(" ");
     private JLabel roleLabel = ComponentsFactory.createLightText(" ");
 
+    /*
+     * Construtor
+     */
     public AccountView(Model model, MainView mainView) {
         this.model = model;
         this.controller = new AccountController(model, mainView, this);
@@ -34,6 +40,9 @@ public class AccountView extends JPanel implements Observer {
         this.display();
     }
 
+    /*
+     * Exibe a view
+     */
     private void display() {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
@@ -67,10 +76,13 @@ public class AccountView extends JPanel implements Observer {
         );
     }
 
+    /*
+     * Atualiza a view
+     */
     public void update() {
-        if (this.model.getLoggedUser() == null) return;
-        
         User user = this.model.getLoggedUser();
+
+        if (user == null) return;
         
         this.nameLabel.setText(user.getName());
         this.emailLabel.setText(user.getEmail());

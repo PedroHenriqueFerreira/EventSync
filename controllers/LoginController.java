@@ -9,11 +9,17 @@ import utils.Validator;
 import views.LoginView;
 import views.MainView;
 
+/*
+ * Controller de login
+ */
 public class LoginController implements Observer {
     private Model model;
     private MainView mainView;
     private LoginView view;
 
+    /*
+     * Construtor
+     */
     public LoginController(Model model, MainView mainView, LoginView view) {
         this.model = model;
 
@@ -21,7 +27,13 @@ public class LoginController implements Observer {
         this.view = view;
     }
 
+    /*
+     * Executada quando o usuário clica no botão de login
+     */
     public void login() {
+        /*
+         * Lista de erros a serem exibidos no popup
+         */
         ArrayList<String> errors = new ArrayList<String>();
 
         String email = this.view.getEmail();
@@ -39,18 +51,33 @@ public class LoginController implements Observer {
             errors.add("• Email ou senha inválidos");
         }
 
+        /*
+         * Exibe o popup de erros caso haja algum erro
+         */
         if (errors.size() > 0) {
             ComponentsFactory.createPopup(errors);
             return;
         }
 
+        /*
+         * Define o usuário logado
+         */
         this.model.setLoggedUser(this.model.getUser(email));
 
+        /*
+         * Limpa os campos de texto e muda para a view de home
+         */
         this.view.clearFields();
         this.mainView.changeView("home");
     }
 
+    /*
+     * Executada quando o usuário clica no botão "Não possuo conta"
+     */
     public void viewRegister() {
+        /*
+         * Limpa os campos de texto e muda para a view de registro
+         */
         this.view.clearFields();
         this.mainView.changeView("register");
     }
