@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -14,13 +13,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +29,15 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
+/*
+ * Classe responsável por criar componentes
+ * Ela é usada para criar componentes com estilos padrões
+ * Além disso, ela é usada para criar componentes que não são padrões do Swing
+ */
 public class ComponentsFactory {
+    /*
+     * Cria o estilo padrão de um botão
+     */
     private static void createButtonStyle(JButton button) {
         button.setFont(Constraints.DEFAULT_FONT);
         button.setBorder(Constraints.DEFAULT_LINE_BORDER);
@@ -42,6 +46,9 @@ public class ComponentsFactory {
         button.setFocusPainted(false);
     }
     
+    /*
+     * Cria um botão com o estilo padrão
+     */
     public static JButton createButton(String value) {
         JButton button = new JButton(value);
 
@@ -73,6 +80,9 @@ public class ComponentsFactory {
         return button;
     }
 
+    /*
+     * Cria um botão claro com o estilo padrão
+     */
     public static JButton createLightButton(String value) {
         JButton button = new JButton(value);
 
@@ -104,6 +114,9 @@ public class ComponentsFactory {
         return button;
     }
 
+    /*
+     * Cria o estilo padrão de um input
+     */
     private static void createInputStyle(JTextField input) {
         input.setFont(Constraints.DEFAULT_FONT);
         input.setBorder(Constraints.DEFAULT_PADDING_BORDER);
@@ -125,26 +138,9 @@ public class ComponentsFactory {
         });
     }
 
-    public static JTextField createSearchInput(String value) {
-        JTextField input = createInput(value);
-        
-        input.setBackground(Constraints.CONTAINER_COLOR);
-
-        input.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-                input.setBackground(Constraints.CONTAINER_COLOR);
-                input.setBorder(Constraints.DEFAULT_LINE_BORDER);
-            }
-            
-            public void focusLost(FocusEvent e) {
-                input.setBackground(Constraints.CONTAINER_COLOR);
-                input.setBorder(Constraints.DEFAULT_PADDING_BORDER);
-            }
-        });
-
-        return input;
-    }
-
+    /*
+     * Cria um input com o estilo padrão
+     */
     public static JTextField createInput(String value) {
         JTextField input = new JTextField(value);
 
@@ -153,6 +149,9 @@ public class ComponentsFactory {
         return input;
     }
 
+    /*
+     * Cria um input de senha com o estilo padrão
+     */
     public static JPasswordField createPasswordInput(String value) {
         JPasswordField input = new JPasswordField(value);
 
@@ -161,6 +160,9 @@ public class ComponentsFactory {
         return input;
     }
 
+    /*
+     * Cria um input de número com o estilo padrão
+     */
     public static JFormattedTextField createNumberInput(String value) {
         NumberFormat numberFormatter = NumberFormat.getInstance();
 
@@ -178,6 +180,9 @@ public class ComponentsFactory {
         return input;
     }
 
+    /*
+     * Cria um input de moeda com o estilo padrão
+     */
     public static JFormattedTextField createCurrencyInput(String value) {
         DecimalFormat decimalFormatter = new DecimalFormat("#,##0.00");
 
@@ -195,6 +200,9 @@ public class ComponentsFactory {
         return input;
     }
 
+    /*
+     * Cria um input com máscara com o estilo padrão
+     */
     public static JFormattedTextField createMaskInput(String mask, String value) {
         try {
             MaskFormatter maskFormatter = new MaskFormatter(mask);
@@ -213,6 +221,9 @@ public class ComponentsFactory {
         }
     }
 
+    /*
+     * Cria o estilo padrão de um scrollbar
+     */
     private static void createScrollBarStyle(JScrollPane scrollBar) {
         JButton emptyButton = createButton("");
         emptyButton.setPreferredSize(new Dimension(0, 0));
@@ -261,6 +272,9 @@ public class ComponentsFactory {
         scrollBar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
+    /*
+     * Cria um scrollbar com o estilo padrão para o componente
+     */
     public static JScrollPane createScrollBar(Component component) {
         JScrollPane scrollBar = new JScrollPane(component);
 
@@ -269,6 +283,9 @@ public class ComponentsFactory {
         return scrollBar;
     }
 
+    /*
+     * Cria um título com o estilo padrão
+     */
     public static JLabel createTitle(String value) {
         JLabel title = new JLabel(value);
 
@@ -285,6 +302,9 @@ public class ComponentsFactory {
         return title;
     }
 
+    /*
+     * Cria o estilo padrão de um texto
+     */
     private static void createTextStyle(JLabel text) {
         text.setFont(Constraints.DEFAULT_FONT);
         
@@ -296,6 +316,9 @@ public class ComponentsFactory {
         text.setPreferredSize(dimension);
     }
 
+    /*
+     * Cria um texto cinza com o estilo padrão
+     */
     public static JLabel createGrayText(String value) {
         JLabel text = new JLabel(value);
 
@@ -305,6 +328,9 @@ public class ComponentsFactory {
         return text;
     }
 
+    /*
+     * Cria um texto branco com o estilo padrão
+     */
     public static JLabel createLightText(String value) {
         JLabel text = new JLabel(value);
 
@@ -314,6 +340,9 @@ public class ComponentsFactory {
         return text;
     }
     
+    /*
+     * Cria um botão de seleção com o estilo padrão
+     */
     public static JRadioButton createRadioButton(String value) {
         JRadioButton button = new JRadioButton(value);
 
@@ -331,6 +360,9 @@ public class ComponentsFactory {
         return button;
     }
 
+    /*
+     * Cria um botão de seleção com o estilo padrão
+     */
     public static JScrollPane createScrollBar(JPanel container) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Constraints.BG_COLOR);
@@ -346,6 +378,9 @@ public class ComponentsFactory {
         return scrollBar;
     }
 
+    /*
+     * Cria as constraints padrão de um scrollbar
+     */
     public static GridBagConstraints createScrollBarConstraints() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -355,6 +390,9 @@ public class ComponentsFactory {
         return gridBagConstraints;
     }
 
+    /*
+     * Cria um container largo com o estilo padrão
+     */
     public static JPanel createLargeContainer(JComponent... components) {
         for (JComponent component : components) {
             component.setPreferredSize(new Dimension(
@@ -366,6 +404,9 @@ public class ComponentsFactory {
         return createContainer(components);
     }
 
+    /*
+     * Cria um container com o estilo padrão
+     */
     public static JPanel createContainer(JComponent... components) {        
         JPanel container = new JPanel(new GridBagLayout());
         container.setBorder(Constraints.LARGE_PADDING_BORDER);
@@ -400,6 +441,9 @@ public class ComponentsFactory {
         return container;
     }
 
+    /*
+     * Cria um popup com o estilo padrão
+     */
     public static void createPopup(ArrayList<String> messages) {
         JFrame popup = new JFrame();
         popup.setResizable(false);

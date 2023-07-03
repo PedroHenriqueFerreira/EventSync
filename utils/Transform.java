@@ -3,7 +3,13 @@ package utils;
 import models.Time;
 import models.Date;
 
+/*
+ * Classe que contém métodos para transformar tipos de dados.
+ */
 public class Transform {
+    /*
+     * Transforma uma string no formato "HH:mmh" em um objeto Time.
+     */
     public static Time toTime(String time) {
         if (time == null) return null;
 
@@ -17,6 +23,9 @@ public class Transform {
         return new Time(hour, minute);
     }
 
+    /*
+     * Transforma uma string no formato "dd/MM/yyyy" em um objeto Date.
+     */
     public static Date toDate(String date) {
         if (date == null) return null;
 
@@ -31,6 +40,9 @@ public class Transform {
         return new Date(day, month, year);
     }
 
+    /*
+     * Transforma uma string no formato "0.00" em um float.
+     */
     public static float toFloat(String price) {
         try {
             if (price == null) return 0;
@@ -41,6 +53,9 @@ public class Transform {
         }
     }
 
+    /*
+     * Transforma uma string no formato "0" em um int.
+     */
     public static int toInt(String number) {
         try {
             if (number == null) return 0;
