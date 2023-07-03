@@ -3,12 +3,25 @@ package models;
 import java.util.ArrayList;
 
 public class Activity {
+    /*
+     * Os atributos de um usuário são:
+     *  - name: nome da atividade
+     *  - description: descrição da atividade
+     *  - instructor: instrutor da atividade
+     *  - date: data da atividade
+     *  - time: horário da atividade
+     *  - frequency: lista de participantes da atividade
+     */
     private String name;
     private String description;
     private Instructor instructor;
     private Date date;
     private Time time;
     private ArrayList<Participant> frequency = new ArrayList<Participant>();
+
+    /*
+     * Getters e setters
+     */
 
     public String getName() {
         return name;
@@ -70,6 +83,9 @@ public class Activity {
         this.frequency = frequency;
     }
 
+    /*
+     * Construtor da classe
+     */
     public Activity(
         String name, 
         String description, 
@@ -84,7 +100,10 @@ public class Activity {
         this.setTime(time);
     };
 
+    /*
+     * Retorna uma string com o nome e a descrição da atividade
+     */
     public String toString() {
-        return String.format("%s - %s às %s", this.name, this.date.toString(), this.time.toString());
+        return String.format("%s - %s", this.name, this.description);
     }
 }
