@@ -1,9 +1,17 @@
 package models;
 
 public class Time {
+    /*
+     * Os atributos de um horário são:
+     * - hour: hora do horário
+     * - minute: minuto do horário
+     */
     private int hour;
     private int minute;
 
+    /*
+     * Getters e setters
+     */
     public int getHour() {
         return hour;
     }
@@ -24,11 +32,17 @@ public class Time {
         this.minute = minute;
     }
 
+    /*
+     * Construtor da classe
+     */
     public Time(int hour, int minute){
         this.setHour(hour);
         this.setMinute(minute);
     }
 
+    /*
+     * Retorna uma string com o horário no formato HH:MMh
+     */
     public String toString(){
         return String.format("%02d:%02dh", this.hour, this.minute);
     }

@@ -3,6 +3,15 @@ package models;
 import utils.CodeGenerator;
 
 public class Payment {
+    /*
+     * Os atributos de um pagamento são:
+     * - code: código do pagamento
+     * - date: data do pagamento
+     * - time: horário do pagamento
+     * - event: evento que o pagamento está relacionado
+     * - participant: participante que realizou o pagamento
+     * - price: preço do pagamento
+     */
     private String code;
     private Date date;
     private Time time;
@@ -10,6 +19,9 @@ public class Payment {
     private Participant participant;
     private float price;
 
+    /*
+     * Construtor da classe
+     */
     public Payment( 
         Date date, 
         Time time, 
@@ -26,6 +38,9 @@ public class Payment {
         setPrice(this.getEvent().getPrice());
     }
 
+    /*
+     * Getters e setters
+     */
     public String getCode() {
         return code;
     }
