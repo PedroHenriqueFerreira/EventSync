@@ -98,7 +98,7 @@ public class UpdateActivityView extends JPanel implements Observer {
         JButton activityButton = ComponentsFactory.createLightButton("Voltar");
         activityButton.addActionListener(e -> this.controller.viewActivity());
 
-        JPanel container = ComponentsFactory.createLargeContainer(
+        JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
             ComponentsFactory.createTitle("Atualizar atividade"),
             ComponentsFactory.createGrayText("Nome:"),

@@ -7,6 +7,7 @@ import models.Admin;
 import models.Event;
 import models.Model;
 import models.Participant;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
 import utils.Transform;
@@ -40,6 +41,7 @@ public class CreateEventController implements Observer {
          * Validação dos dados
          */
         ArrayList<String> errors = new ArrayList<String>();
+        User loggedUser = this.model.getLoggedUser();
 
         String name = this.view.getName();
         String description = this.view.getDescription();
@@ -52,7 +54,11 @@ public class CreateEventController implements Observer {
         String addressNumber = this.view.getAddressNumber();
         String price = this.view.getPrice();
 
-        if (this.model.getLoggedUser() instanceof Participant) {
+        if (loggedUser == null) {
+            errors.add("• Não foi possível criar o evento");
+        }
+
+        if (loggedUser instanceof Participant) {
             errors.add("• Você não tem permissão para criar eventos");
         }
 

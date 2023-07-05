@@ -65,6 +65,21 @@ public class EventController implements Observer {
         User loggedUser = this.model.getLoggedUser();
         Event selectedEvent = this.model.getSelectedEvent();
 
+        ArrayList<String> errors = new ArrayList<String>();
+
+        if (loggedUser == null || selectedEvent == null) {
+            errors.add("• Não foi possível remover o evento");
+        }
+
+        if (loggedUser instanceof Admin) {
+            errors.add("• Você não tem permissão para remover o evento");
+        }
+        
+        if (errors.size() > 0) {
+            ComponentsFactory.createPopup(errors);
+            return;
+        }
+
         loggedUser.removeEvent(selectedEvent);
         
         ArrayList<Payment> payments = this.model.getPayments();
@@ -81,6 +96,10 @@ public class EventController implements Observer {
          */
         selectedEvent.removeParticipant((Participant) loggedUser);
 
+        for (Activity activity : selectedEvent.getActivities()) {
+            activity.removeParticipant((Participant) loggedUser);
+        }
+
         /*
          * Notifica os observadores
          */
@@ -91,6 +110,27 @@ public class EventController implements Observer {
      * Cria um pagamento e adiciona o evento ao usuário logado
      */
     public void buyEvent() {
+        User loggedUser = this.model.getLoggedUser();
+        Event selectedEvent = this.model.getSelectedEvent();
+
+        /*
+         * Cria um array de erros
+         */
+        ArrayList<String> errors = new ArrayList<String>();
+
+        if (loggedUser == null || selectedEvent == null) {
+            errors.add("• Não foi possível comprar o evento");
+        }
+
+        if (loggedUser instanceof Admin) {
+            errors.add("• Você não tem permissão para comprar o evento");
+        }
+
+        if (errors.size() > 0) {
+            ComponentsFactory.createPopup(errors);
+            return;
+        }
+
         /* 
          * Cria um objeto Time com a hora e minuto atual
          */
@@ -104,22 +144,6 @@ public class EventController implements Observer {
             LocalDate.now().getMonthValue(), 
             LocalDate.now().getYear()
         );
-
-        /*
-         * Cria um array de erros
-         */
-        ArrayList<String> errors = new ArrayList<String>();
-
-        User loggedUser = this.model.getLoggedUser();
-        Event selectedEvent = this.model.getSelectedEvent();
-
-        if (loggedUser instanceof Admin) {
-            errors.add("• Apenas usuários podem comprar eventos");
-        }
-
-        if (selectedEvent == null) {
-            errors.add("• Selecione um evento");
-        } 
 
         if (errors.size() > 0) {
             ComponentsFactory.createPopup(errors);
@@ -144,6 +168,36 @@ public class EventController implements Observer {
      * Muda para a view home
      */
     public void viewHome() {
+        this.mainView.changeView("home");
+    }
+
+    /*
+     * Deleta o evento selecionado
+     */
+    public void deleteEvent() {
+        Event event = this.model.getSelectedEvent();
+        User user = this.model.getLoggedUser();
+
+        ArrayList<String> errors = new ArrayList<String>();
+
+        if (event == null || user == null) {
+            errors.add("Não foi possível deletar o evento");
+        }
+
+        if (user instanceof Participant) {
+            errors.add("Você não tem permissão para deletar o evento");
+        }
+
+        if (errors.size() > 0) {
+            ComponentsFactory.createPopup(errors);
+            return;
+        }
+
+        /*
+         * Remove o evento
+         */
+        this.model.removeEvent(event.getCode());
+
         this.mainView.changeView("home");
     }
 

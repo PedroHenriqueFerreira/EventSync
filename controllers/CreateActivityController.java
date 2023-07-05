@@ -7,13 +7,13 @@ import models.Event;
 import models.Instructor;
 import models.Model;
 import models.Participant;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
 import utils.Transform;
 import utils.Validator;
 import views.CreateActivityView;
 import views.MainView;
-import views.UpdateActivityView;
 
 public class CreateActivityController implements Observer {
     private Model model;
@@ -30,6 +30,7 @@ public class CreateActivityController implements Observer {
     public void createActivity() {
         ArrayList<String> errors = new ArrayList<String>();        
 
+        User loggedUser = this.model.getLoggedUser();
         Event event = this.model.getSelectedEvent();
 
         String name = this.view.getName();
@@ -40,7 +41,13 @@ public class CreateActivityController implements Observer {
         String date = this.view.getDate();
         String time = this.view.getTime();
 
-        if (this.model.getLoggedUser() instanceof Participant) {
+        if (loggedUser == null || event == null) {
+            errors.add("• Não foi possível criar a atividade");
+        } else if (event.getAdmin() != loggedUser) {
+            errors.add("• Você não tem permissão para atualizar atividades");
+        }
+
+        if (loggedUser instanceof Participant) {
             errors.add("• Você não tem permissão para atualizar atividades");
         }
 
@@ -70,10 +77,6 @@ public class CreateActivityController implements Observer {
 
         if (!Validator.timeValidator(time)) {
             errors.add("• Hora inválida");
-        }
-
-        if (event == null) {
-            errors.add("• Selecione um evento");
         }
 
         if (errors.size() > 0) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import models.Event;
 import models.Model;
 import models.Participant;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Observer;
 import utils.Transform;
@@ -34,6 +35,9 @@ public class UpdateEventController implements Observer {
      * Atualiza um evento
      */
     public void updateEvent() {
+        Event event = this.model.getSelectedEvent();
+        User loggedUser = this.model.getLoggedUser();
+
         ArrayList<String> errors = new ArrayList<String>();
 
         String name = this.view.getName();
@@ -51,7 +55,13 @@ public class UpdateEventController implements Observer {
          * Validação de campos
          */
 
-        if (this.model.getLoggedUser() instanceof Participant) {
+        if (event == null || loggedUser == null) {
+            errors.add("• Não foi possível atualizar o evento");
+        } else if (event.getAdmin() != loggedUser) {
+            errors.add("• Você não tem permissão para atualizar eventos");
+        }
+
+        if (loggedUser instanceof Participant) {
             errors.add("• Você não tem permissão para atualizar eventos");
         }
 
@@ -103,8 +113,6 @@ public class UpdateEventController implements Observer {
         /*
          * Atualização do evento selecionado
          */
-        Event event = this.model.getSelectedEvent();
-
         event.setName(name);
         event.setDescription(description);
         event.setCategory(category);
@@ -115,8 +123,6 @@ public class UpdateEventController implements Observer {
         event.getAddress().setStreet(street);
         event.getAddress().setNumber(Transform.toInt(addressNumber));
         event.setPrice(Transform.toFloat(price));
-        
-        this.view.clearFields();
 
         /*
          * Notifica os observadores e muda para a view de evento
@@ -129,7 +135,7 @@ public class UpdateEventController implements Observer {
      * Muda para a view de evento
      */
     public void viewEvent() {
-        this.view.clearFields();
+        this.model.notifyObservers();
         this.mainView.changeView("event");
     }
 

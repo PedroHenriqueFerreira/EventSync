@@ -3,6 +3,7 @@ package views;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -36,10 +37,20 @@ public class EventView extends JPanel implements Observer {
     private JLabel priceTextLabel = ComponentsFactory.createLightText(" ");
     private JLabel participantsTextLabel = ComponentsFactory.createLightText(" ");
 
-    private JPanel activitiesPanel = new JPanel(new GridBagLayout());
+    private JPanel activitiesPanel = new JPanel(
+        new GridLayout(
+            10, 
+            1, 
+            0, 
+            Constraints.BUTTON_INSETS.top
+        )
+    );
+
     private JButton createActivity = ComponentsFactory.createButton("Criar atividade");
 
     private JButton updateOrBuyButton = ComponentsFactory.createButton("Atualizar evento");
+
+    private JButton deleteButton = ComponentsFactory.createLightButton("Deletar evento");
 
     /*
      * Construtor
@@ -63,10 +74,16 @@ public class EventView extends JPanel implements Observer {
         JButton backButton = ComponentsFactory.createLightButton("Voltar");
         backButton.addActionListener(e -> this.controller.viewHome());
 
-        createActivity.addActionListener(e -> this.controller.viewCreateActivity());
+        this.createActivity.addActionListener(e -> this.controller.viewCreateActivity());
+        this.deleteButton.addActionListener(e -> this.controller.deleteEvent());
 
         this.activitiesPanel.setBackground(Constraints.CONTAINER_COLOR);
-        this.activitiesPanel.setPreferredSize(new Dimension(Constraints.LARGE_COMPONENT_WIDTH, 400));
+        this.activitiesPanel.setPreferredSize(
+            new Dimension(
+                Constraints.LARGE_COMPONENT_WIDTH, 
+                Constraints.DEFAULT_COMPONENT_HEIGHT * 10 + Constraints.BUTTON_INSETS.top * 9
+            )
+        );
 
         JPanel container = ComponentsFactory.createLargeContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
@@ -89,9 +106,10 @@ public class EventView extends JPanel implements Observer {
             this.participantsTextLabel,
             ComponentsFactory.createGrayText("Atividades:"),
             this.activitiesPanel,
-            createActivity,
+            this.createActivity,
             ComponentsFactory.createLightText(" "),
             this.updateOrBuyButton,
+            this.deleteButton,
             backButton
         );
 
@@ -113,8 +131,10 @@ public class EventView extends JPanel implements Observer {
          */
         if (user instanceof Admin) {
             this.createActivity.setVisible(true);
+            this.deleteButton.setVisible(true);
         } else {
             this.createActivity.setVisible(false);
+            this.deleteButton.setVisible(false);
         }
 
         /*
@@ -143,10 +163,6 @@ public class EventView extends JPanel implements Observer {
 
         this.activitiesPanel.removeAll();
 
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.anchor = GridBagConstraints.NORTH;
-        gridBagConstraints.insets = Constraints.BUTTON_INSETS;
-
         ArrayList<Activity> activities = event.getActivities();
 
         for (int i = 0; i < activities.size(); i++) {
@@ -156,10 +172,8 @@ public class EventView extends JPanel implements Observer {
             button.setPreferredSize(Constraints.LARGE_DIMENSION);
             
             button.addActionListener(e -> this.controller.viewActivity(activity));
-
-            gridBagConstraints.gridy = i;
             
-            this.activitiesPanel.add(button, gridBagConstraints);
+            this.activitiesPanel.add(button);
         }
 
         /*

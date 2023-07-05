@@ -46,6 +46,16 @@ public class UpdateAccountView extends JPanel implements Observer {
     }
 
     /*
+     * Limpa os campos de texto
+     */
+    public void clearFields() {
+        this.nameTextField.setText("");
+        this.emailTextField.setText("");
+        this.phoneTextField.setText("");
+        this.passwordTextField.setText("");
+    }
+
+    /*
      * Construtor
      */
     public UpdateAccountView(Model model, MainView mainView) {

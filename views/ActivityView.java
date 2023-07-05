@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -9,7 +10,9 @@ import javax.swing.JPanel;
 import controllers.ActivityController;
 import models.Activity;
 import models.Admin;
+import models.Event;
 import models.Model;
+import models.User;
 import utils.ComponentsFactory;
 import utils.Constraints;
 import utils.Observer;
@@ -27,8 +30,9 @@ public class ActivityView extends JPanel implements Observer {
     private JLabel instructorEmailLabel = ComponentsFactory.createLightText(" ");
     private JLabel instructorPhoneLabel = ComponentsFactory.createLightText(" ");
     private JLabel dateTimeLabel = ComponentsFactory.createLightText(" ");
+    private JLabel frequencyLabel = ComponentsFactory.createLightText(" ");
 
-    private JButton updateButton = ComponentsFactory.createButton("Atualizar atividade");
+    private JButton updateOrJoinButton = ComponentsFactory.createButton("Atualizar atividade");
     private JButton deleteButton = ComponentsFactory.createLightButton("Apagar atividade");
 
     /*
@@ -50,13 +54,12 @@ public class ActivityView extends JPanel implements Observer {
         this.setBackground(Constraints.BG_COLOR);
         this.setLayout(new GridBagLayout());
         
-        this.updateButton.addActionListener(e -> this.controller.updateActivity());
         this.deleteButton.addActionListener(e -> this.controller.deleteActivity());
         
         JButton eventButton = ComponentsFactory.createLightButton("Voltar");
         eventButton.addActionListener(e -> this.controller.viewEvent());
 
-        JPanel container = ComponentsFactory.createLargeContainer(
+        JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
             ComponentsFactory.createTitle("Visualizar atividade"),
             ComponentsFactory.createGrayText("Nome:"),
@@ -71,8 +74,10 @@ public class ActivityView extends JPanel implements Observer {
             this.instructorPhoneLabel,
             ComponentsFactory.createGrayText("Data e Hora:"),
             this.dateTimeLabel,
+            ComponentsFactory.createGrayText("Frequência:"),
+            this.frequencyLabel,
             ComponentsFactory.createLightText(" "),
-            this.updateButton,
+            this.updateOrJoinButton,
             this.deleteButton,
             eventButton
         );
@@ -87,9 +92,12 @@ public class ActivityView extends JPanel implements Observer {
         /*
          * Atualiza os campos com os valores do evento selecionado
          */
+
+        User loggedUser = this.model.getLoggedUser();
+        Event event = this.model.getSelectedEvent();
         Activity activity = this.model.getSelectedActivity();
 
-        if (activity == null) return;
+        if (loggedUser == null || event == null || activity == null) return;
 
         this.nameLabel.setText(activity.getName());
         this.descriptionLabel.setText(activity.getDescription());
@@ -97,12 +105,35 @@ public class ActivityView extends JPanel implements Observer {
         this.instructorEmailLabel.setText(activity.getInstructor().getEmail());
         this.instructorPhoneLabel.setText(activity.getInstructor().getPhone());
         this.dateTimeLabel.setText(activity.getDate().toString() + " às " + activity.getTime().toString());
+        this.frequencyLabel.setText(activity.getFrequency().size() + " de " + event.getParticipants().size());
 
-        if (this.model.getLoggedUser() instanceof Admin) {
-            this.updateButton.setVisible(true);
+        ActionListener[] listeners = this.updateOrJoinButton.getActionListeners();
+
+        for (ActionListener listener : listeners) {
+            this.updateOrJoinButton.removeActionListener(listener);
+        }
+        
+        if (loggedUser instanceof Admin) {
+            this.updateOrJoinButton.setText("Atualizar atividade");
+            this.updateOrJoinButton.addActionListener(e -> this.controller.updateActivity());
+            this.updateOrJoinButton.setVisible(true);
+
             this.deleteButton.setVisible(true);
         } else {
-            this.updateButton.setVisible(false);
+            if (event.getParticipants().contains(loggedUser)) {
+                this.updateOrJoinButton.setVisible(true);
+                
+                if (activity.getFrequency().contains(loggedUser)) {
+                    this.updateOrJoinButton.setText("Sair");
+                    this.updateOrJoinButton.addActionListener(e -> this.controller.leaveActivity());
+                } else {
+                    this.updateOrJoinButton.setText("Participar");
+                    this.updateOrJoinButton.addActionListener(e -> this.controller.joinActivity());
+                }
+            } else {
+                this.updateOrJoinButton.setVisible(false);
+            }
+
             this.deleteButton.setVisible(false);
         }
     }

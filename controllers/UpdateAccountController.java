@@ -27,20 +27,26 @@ public class UpdateAccountController implements Observer {
         this.mainView = mainView;
         this.view = view;
     }
-
+    
     /*
      * Atualiza a conta do usuário
      */
     public void updateAccount() {
         /*
-         * Validação dos campos
-         */
+        * Validação dos campos
+        */
         ArrayList<String> errors = new ArrayList<String>();
+        
+        User user = this.model.getLoggedUser();
 
         String name = this.view.getName();
         String email = this.view.getEmail();
         String phone = this.view.getPhone();
         String password = this.view.getPassword();
+
+        if (user == null) {
+            errors.add("• Não foi possível atualizar a conta");
+        }
 
         if (!Validator.sizeValidator(name, 3, 50)) {
             errors.add("• O nome deve ter entre 3 e 50 caracteres");
@@ -74,8 +80,6 @@ public class UpdateAccountController implements Observer {
             return;
         }
 
-        User user = this.model.getLoggedUser();
-
         /*
          * Remove o usuário antigo e adiciona o novo
          */
@@ -99,6 +103,7 @@ public class UpdateAccountController implements Observer {
      * Volta para a tela de conta
      */
     public void viewAccount() {
+        this.model.notifyObservers();
         this.mainView.changeView("account");
     }
 

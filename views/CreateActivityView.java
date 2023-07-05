@@ -82,7 +82,7 @@ public class CreateActivityView extends JPanel implements Observer {
         JButton activityButton = ComponentsFactory.createLightButton("Voltar");
         activityButton.addActionListener(e -> this.controller.viewEvent());
 
-        JPanel container = ComponentsFactory.createLargeContainer(
+        JPanel container = ComponentsFactory.createContainer(
             new JLabel(Constraints.LOGO_IMAGE_ICON),
             ComponentsFactory.createTitle("Criar atividade"),
             ComponentsFactory.createGrayText("Nome:"),

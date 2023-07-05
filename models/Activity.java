@@ -106,4 +106,22 @@ public class Activity {
     public String toString() {
         return String.format("%s - %s", this.name, this.description);
     }
+
+    /*
+     * Adiciona um participante à lista de participantes da atividade
+     */
+    public void addParticipant(Participant participant) {
+        if (participant == null) return;
+
+        this.frequency.add(participant);
+    }
+
+    /*
+     * Remove um participante da lista de participantes da atividade
+     */
+    public void removeParticipant(Participant participant) {
+        if (participant == null) return;
+
+        this.frequency.remove(participant);
+    }
 }

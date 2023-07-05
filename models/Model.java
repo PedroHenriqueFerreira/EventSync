@@ -94,6 +94,7 @@ public class Model {
     public void removeEvent(String code) {
         if (code == null) return;
 
+        this.loggedUser.removeEvent(this.getEvent(code));
         this.events.remove(code);
 
         this.notifyObservers();
