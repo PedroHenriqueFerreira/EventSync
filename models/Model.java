@@ -95,6 +95,11 @@ public class Model {
         if (code == null) return;
 
         this.loggedUser.removeEvent(this.getEvent(code));
+
+        for (Participant participant : this.getEvent(code).getParticipants()) {
+            participant.removeEvent(this.getEvent(code));
+        }
+
         this.events.remove(code);
 
         this.notifyObservers();
